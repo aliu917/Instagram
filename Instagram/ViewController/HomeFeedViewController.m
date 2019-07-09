@@ -13,10 +13,11 @@
 #import "Post.h"
 #import "PostCell.h"
 
-@interface HomeFeedViewController () <UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface HomeFeedViewController () <UITableViewDelegate, UITableViewDataSource>
 
-@property (strong, nonatomic) NSArray *posts;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) UIRefreshControl *refreshControl;
+@property (strong, nonatomic) NSArray *posts;
 
 @end
 
@@ -26,8 +27,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-}
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+    [self fetchPosts];
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(fetchPosts) forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview: self.refreshControl];}
 
+/*
 #pragma mark - UIImagePickerController delegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
@@ -56,12 +63,12 @@
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-
+*/
 #pragma mark - UITableView delegate & data source
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     PostCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PostCell"];
-    
+    [cell setPost: self.posts[indexPath.row]];
     return cell;
 }
 
@@ -69,6 +76,7 @@
     return self.posts.count;
 }
 
+/*
 #pragma mark - Action: camera segue to UIImagePickerController
 
 - (IBAction)didTapCamera:(id)sender {
@@ -83,7 +91,7 @@
     }
     [self presentViewController:imagePickerVC animated:YES completion:nil];
 }
-
+*/
 # pragma mark - Action: logout
 
 - (IBAction)didTapLogout:(id)sender {
@@ -100,6 +108,25 @@
 
 #pragma mark - HomeFeedViewController helper functions
 
+- (void) fetchPosts {
+    PFQuery *postQuery = [Post query];
+    [postQuery orderByDescending:@"createdAt"];
+    [postQuery includeKey:@"author"];
+    postQuery.limit = 20;
+    
+    // fetch data asynchronously
+    [postQuery findObjectsInBackgroundWithBlock:^(NSArray<Post *> * _Nullable posts, NSError * _Nullable error) {
+        if (posts) {
+            self.posts = posts;
+            [self.tableView reloadData];
+        }
+        else {
+            // handle error
+        }
+        [self.refreshControl endRefreshing];
+    }];
+}
+/*
 - (UIImage *)resizeImage:(UIImage *)image withSize:(CGSize)size {
     UIImageView *resizeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
     
@@ -113,6 +140,7 @@
     
     return newImage;
 }
+ */
 /*
 -(CGSize *) makeCGSize: (UIImage *) image {
     CGSize imageSize = CGSizeMake(image.size.width * image.scale, image.size.height * image.scale);
