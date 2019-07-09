@@ -38,8 +38,7 @@
     
     if (PFUser.currentUser) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        
-        self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"AuthenticatedViewController"];
+        self.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"Navigator"];
     }
 
     return YES;

@@ -128,10 +128,19 @@
         <!--Home Feed-->
         <scene sceneID="53o-9p-H8b">
             <objects>
-                <viewController id="ab3-7T-vfl" customClass="HomeFeedViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HomeFeedViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ab3-7T-vfl" customClass="HomeFeedViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="uTc-Dg-DqY">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Home Feed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qhH-fD-Q5m">
+                                <rect key="frame" x="186" y="399" width="89" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="Cwx-v7-nBA"/>
                     </view>
@@ -148,12 +157,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KZh-U4-gUW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="354" y="2225"/>
+            <point key="canvasLocation" x="353.62318840579712" y="2224.5535714285711"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="NAZ-87-rq5">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="xLR-d3-4sQ" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="Navigator" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="xLR-d3-4sQ" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="XlM-83-VTe">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
