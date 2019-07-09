@@ -143,6 +143,27 @@
             </objects>
             <point key="canvasLocation" x="354" y="1554"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="6b0-82-DVl">
+            <objects>
+                <viewController id="8xC-1E-5XK" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="efo-2T-a0h">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AZD-9q-KLJ">
+                                <rect key="frame" x="0.0" y="88" width="414" height="378"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="X5a-9i-D7e"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fnp-Nz-B20" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-904.34782608695662" y="3724.5535714285711"/>
+        </scene>
         <!--Home Feed-->
         <scene sceneID="53o-9p-H8b">
             <objects>
@@ -179,6 +200,7 @@
                                         <connections>
                                             <outlet property="comment" destination="BH7-Ke-FqV" id="87b-WO-Fnc"/>
                                             <outlet property="postImage" destination="7jj-5v-pef" id="gg0-ah-iNE"/>
+                                            <segue destination="8xC-1E-5XK" kind="show" id="G1b-CY-oka"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

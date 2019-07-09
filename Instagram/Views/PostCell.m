@@ -19,6 +19,7 @@
 }
 
 - (void) setPost: (Post *) post {
+    NSLog(@"setPost called");
     _post = post;
     self.comment.text = post.caption;
     //[self setPostImage: post.image];

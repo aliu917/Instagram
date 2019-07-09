@@ -58,6 +58,7 @@
 - (IBAction)didTapPost:(id)sender {
     self.caption.delegate = self;
     [Post postUserImage: self.postImage withCaption: self.caption.text withCompletion: nil];
+    [self.tabBarController setSelectedIndex: 0];
 }
 
 
