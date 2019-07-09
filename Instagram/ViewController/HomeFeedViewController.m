@@ -9,7 +9,7 @@
 #import "HomeFeedViewController.h"
 #import "Parse/Parse.h"
 #import "AppDelegate.h"
-#import "LogInViewController.h"
+#import "LoginViewController.h"
 #import "Post.h"
 #import "PostCell.h"
 
@@ -21,6 +21,8 @@
 @end
 
 @implementation HomeFeedViewController
+
+#pragma mark - HomeFeedViewController lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -55,7 +57,20 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - UITableView delegate & data source
+
+- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    PostCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PostCell"];
+    
+    return cell;
+}
+
+- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.posts.count;
+}
+
 #pragma mark - Action: camera segue to UIImagePickerController
+
 - (IBAction)didTapCamera:(id)sender {
     UIImagePickerController *imagePickerVC = [UIImagePickerController new];
     imagePickerVC.delegate = self;
@@ -77,7 +92,7 @@
     }];
     AppDelegate *appDelegateTemp = [[UIApplication sharedApplication]delegate];
     
-    LogInViewController* loginController = [[UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"LogInViewController"];
+    LoginViewController* loginController = [[UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"LoginViewController"];
     
     UINavigationController* navigation = [[UINavigationController alloc] initWithRootViewController:loginController];
     appDelegateTemp.window.rootViewController = navigation;
@@ -115,16 +130,6 @@
     // Pass the selected object to the new view controller.
 }
 */
-
-- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    PostCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PostCell"];
-
-    return cell;
-}
-
-- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.posts.count;
-}
 
 
 @end

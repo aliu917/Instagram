@@ -1,5 +1,5 @@
 //
-//  LogInViewController.h
+//  LoginViewController.h
 //  Instagram
 //
 //  Created by aliu18 on 7/8/19.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LogInViewController : UIViewController
+@interface LoginViewController : UIViewController
 
 @end
 

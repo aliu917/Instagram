@@ -1,27 +1,32 @@
 //
-//  LogInViewController.m
+//  LoginViewController.m
 //  Instagram
 //
 //  Created by aliu18 on 7/8/19.
 //  Copyright © 2019 aliu18. All rights reserved.
 //
 
-#import "LogInViewController.h"
+#import "LoginViewController.h"
 #import "Parse/Parse.h"
 
-@interface LogInViewController ()
+@interface LoginViewController ()
 
 @property (weak, nonatomic) IBOutlet UITextField *usernameField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
 
 @end
 
-@implementation LogInViewController
+@implementation LoginViewController
+
+#pragma mark - LoginViewController lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 }
+
+#pragma mark - Action: logging in
+
 - (IBAction)didTapLogin:(id)sender {
     NSString *username = self.usernameField.text;
     NSString *password = self.passwordField.text;

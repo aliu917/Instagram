@@ -18,14 +18,21 @@
 
 @implementation SignUpViewController
 
+#pragma mark - SignUpViewController lifecycle
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 }
 
+#pragma mark - Action: close sign up screen
+
 - (IBAction)didTapClose:(id)sender {
     [self dismissViewControllerAnimated:true completion:nil];
 }
+
+#pragma mark - Action: register user
+
 - (IBAction)registerUser:(id)sender {
     PFUser *newUser = [PFUser user];
     newUser.username = self.usernameField.text;

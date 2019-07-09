@@ -19,9 +19,13 @@
 @dynamic likeCount;
 @dynamic commentCount;
 
+#pragma mark - Parse identifier
+
 + (nonnull NSString *)parseClassName {
     return @"Post";
 }
+
+#pragma mark - create post
 
 + (void) postUserImage: ( UIImage * _Nullable )image withCaption: ( NSString * _Nullable )caption withCompletion: (PFBooleanResultBlock  _Nullable)completion {
     
@@ -35,6 +39,8 @@
     [newPost saveInBackgroundWithBlock: completion];
 }
 
+#pragma mark - Make PFFile
+
 + (PFFileObject *)getPFFileFromImage: (UIImage * _Nullable)image {
         if (!image) {
         return nil;
@@ -45,7 +51,7 @@
     }
     
     //CHANGE MADE AFTER REFERENCING STACKOVERFLOW!!!
-    //https://stackoverflow.com/questions/54500145/parse-undeclared-type-pffile-pod-1-17-2
+   //PFFile --> PFFileObject and fileWithName --> fileObjectWithName //https://stackoverflow.com/questions/54500145/parse-undeclared-type-pffile-pod-1-17-2
     //https://parseplatform.org/Parse-SDK-iOS-OSX/api/Classes/PFFileObject.html#/c:objc(cs)PFFileObject(cm)fileObjectWithName:data:
     //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     
