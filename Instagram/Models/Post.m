@@ -49,12 +49,6 @@
     if (!imageData) {
         return nil;
     }
-    
-    //CHANGE MADE AFTER REFERENCING STACKOVERFLOW!!!
-   //PFFile --> PFFileObject and fileWithName --> fileObjectWithName //https://stackoverflow.com/questions/54500145/parse-undeclared-type-pffile-pod-1-17-2
-    //https://parseplatform.org/Parse-SDK-iOS-OSX/api/Classes/PFFileObject.html#/c:objc(cs)PFFileObject(cm)fileObjectWithName:data:
-    //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    
     return [PFFileObject fileObjectWithName:@"image.png" data:imageData];
 }
 

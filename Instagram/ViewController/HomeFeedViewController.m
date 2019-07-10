@@ -12,6 +12,7 @@
 #import "LoginViewController.h"
 #import "Post.h"
 #import "PostCell.h"
+#import "PostDetailsViewController.h"
 
 @interface HomeFeedViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -149,15 +150,18 @@
 }
 */
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    PostCell *tappedCell = sender;
+    PostDetailsViewController *postDetailsViewController = [segue destinationViewController];
+    postDetailsViewController.post = tappedCell.post;
 }
-*/
+
 
 
 @end

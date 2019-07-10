@@ -22,7 +22,8 @@
     NSLog(@"setPost called");
     _post = post;
     self.comment.text = post.caption;
-    //[self setPostImage: post.image];
+    
+    [self makePostImage: post.image];
     //self.postImage.image = post.image;
 }
 
@@ -33,8 +34,8 @@
     // Configure the view for the selected state
 }
 */
-/*
--(void) setPostImage: (PFFileObject *) postFile {
+
+-(void) makePostImage: (PFFileObject *) postFile {
     [postFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
         if (!data) {
             return NSLog(@"%@", error);
@@ -42,6 +43,6 @@
         self.postImage.image = [UIImage imageWithData:data];
     }];
 }
-*/
+
 
 @end
