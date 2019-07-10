@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *username;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *caption;
+@property (weak, nonatomic) IBOutlet UILabel *likeCount;
 
 @end
 
@@ -60,8 +61,16 @@ static NSString * formatDate(NSDate *createdAtOriginalString) {
     self.username.text = self.post.author.username;
     self.dateLabel.text = formatDate(self.post.createdAt);
     self.caption.text = self.post.caption;
+    self.likeCount.text = [self makeLikeCount];
     //[self makePostImage:self.post.image];
     makePostImage(self.post.image, self.postImage);
+}
+
+- (NSString *) makeLikeCount {
+    NSNumber *numLikes = [self.post objectForKey:@"likeCount"];
+    NSString *numLikeString = [numLikes stringValue];
+    NSString *likeString = [NSString stringWithFormat:@"%@ likes", numLikeString];
+    return likeString;
 }
 
 #pragma mark - PostDetailsViewController helper function
