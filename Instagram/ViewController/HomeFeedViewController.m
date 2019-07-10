@@ -13,12 +13,14 @@
 #import "Post.h"
 #import "PostCell.h"
 #import "PostDetailsViewController.h"
+#import "MBProgressHUD.h"
 
-@interface HomeFeedViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface HomeFeedViewController () <UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
-@property (strong, nonatomic) NSArray *posts;
+@property (strong, nonatomic) NSMutableArray *posts;
+@property (assign, nonatomic) BOOL isMoreDataLoading;
 
 @end
 
@@ -34,38 +36,9 @@
     [self fetchPosts];
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(fetchPosts) forControlEvents:UIControlEventValueChanged];
-    [self.tableView addSubview: self.refreshControl];}
-
-/*
-#pragma mark - UIImagePickerController delegate
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
-    
-    UIImage *originalImage = info[UIImagePickerControllerOriginalImage];
-    UIImage *editedImage = info[UIImagePickerControllerEditedImage];
-    
-    
-    
-    
-    
-    //CGSize *size = [self makeCGSize: editedImage];
-    //^note sure how to convert 10MB to CGSize...
-    
-    //editedImage = [self resizeImage:editedImage withSize:<#(CGSize)#>]
-    
-    
-    
-    
-    
-    
-    
-    // Do something with the images (based on your use case)
-    [Post postUserImage: editedImage withCaption: nil withCompletion: nil];
-    //^^^maybe?
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.tableView addSubview: self.refreshControl];
 }
-*/
+
 #pragma mark - UITableView delegate & data source
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
@@ -76,6 +49,65 @@
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.posts.count;
+}
+
+#pragma mark - UIScrollView delegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if(!self.isMoreDataLoading){
+        int scrollViewContentHeight = self.tableView.contentSize.height;
+        int scrollOffsetThreshold = scrollViewContentHeight - self.tableView.bounds.size.height;
+        if(scrollView.contentOffset.y > scrollOffsetThreshold && self.tableView.isDragging) {
+            self.isMoreDataLoading = true;
+            [self loadMoreData];
+        }
+    }
+}
+
+-(void)loadMoreData{
+    
+    // ... Create the NSURLRequest (myRequest) ...
+    
+    // Configure session so that completion handler is executed on main UI thread
+    /*NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    
+    NSURLSession *session  = [NSURLSession sessionWithConfiguration:configuration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+    
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *requestError) {
+        if (requestError != nil) {
+            
+        }
+        else
+        {
+            // Update flag
+            self.isMoreDataLoading = false;
+            
+            // ... Use the new data to update the data source ...
+            
+            // Reload the tableView now that there is new data
+            [self.tableView reloadData];
+        }
+    }];
+    [task resume];*/
+    Post *lastPost = [self.posts lastObject];
+    NSDate *lastDate = lastPost.createdAt;
+    PFQuery *query = [PFQuery queryWithClassName:@"Post"];
+    [query whereKey:@"createdAt" lessThan:lastDate];
+    query.limit = 20;
+    
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+
+    // fetch data asynchronously
+    [query findObjectsInBackgroundWithBlock:^(NSArray *posts, NSError *error) {
+        if (posts != nil) {
+            self.isMoreDataLoading = false;
+            [self.posts addObjectsFromArray:posts];
+            [self.tableView reloadData];
+        } else {
+            NSLog(@"%@", error.localizedDescription);
+        }
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+    }];
 }
 
 /*
@@ -115,7 +147,8 @@
     [postQuery orderByDescending:@"createdAt"];
     [postQuery includeKey:@"author"];
     postQuery.limit = 20;
-    
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+
     // fetch data asynchronously
     [postQuery findObjectsInBackgroundWithBlock:^(NSArray<Post *> * _Nullable posts, NSError * _Nullable error) {
         if (posts) {
@@ -126,6 +159,7 @@
             // handle error
         }
         [self.refreshControl endRefreshing];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
 }
 
