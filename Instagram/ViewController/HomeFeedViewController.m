@@ -21,13 +21,11 @@
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
 @property (strong, nonatomic) NSMutableArray *posts;
 @property (assign, nonatomic) BOOL isMoreDataLoading;
-
 @end
 
 #pragma mark - C helper functions
 
 /*
-void *refToSelf;
 
 static void fetchPostsWithFilter(NSDate *lastDate) {
     PFQuery *postQuery = [Post query];
@@ -53,21 +51,26 @@ static void fetchPostsWithFilter(NSDate *lastDate) {
 }
  */
 
+static void setImageBar(UINavigationItem *navigationItem) {
+    UIImage *img = [UIImage imageNamed:@"instagramLetters.png"];
+    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+    [imgView setImage:img];
+    // setContent mode aspect fit
+    [imgView setContentMode:UIViewContentModeScaleAspectFit];
+    navigationItem.titleView = imgView;
+}
+
 @implementation HomeFeedViewController
 
 #pragma mark - HomeFeedViewController lifecycle
-/*
-- (id) init {
-    self = [super init];
-    refToSelf = self;
-}*/
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.posts = [[NSMutableArray alloc] init];
-    [self setImageBar];
+    setImageBar(self.navigationItem);
+    //[self setImageBar];
     [self fetchPostsWithFilter:nil];
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(fetchPosts) forControlEvents:UIControlEventValueChanged];
@@ -156,7 +159,6 @@ static void fetchPostsWithFilter(NSDate *lastDate) {
 
 #pragma mark - HomeFeedViewController helper functions
 
-
 - (void) fetchPostsWithFilter: (NSDate *) lastDate {
     PFQuery *postQuery = [Post query];
     [postQuery orderByDescending:@"createdAt"];
@@ -200,7 +202,7 @@ static void fetchPostsWithFilter(NSDate *lastDate) {
         [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
 }
-*/
+*//*
 - (void) setImageBar {
     UIImage *img = [UIImage imageNamed:@"instagramLetters.png"];
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
@@ -208,7 +210,7 @@ static void fetchPostsWithFilter(NSDate *lastDate) {
     // setContent mode aspect fit
     [imgView setContentMode:UIViewContentModeScaleAspectFit];
     self.navigationItem.titleView = imgView;
-}
+}*/
 /*
 - (UIImage *)resizeImage:(UIImage *)image withSize:(CGSize)size {
     UIImageView *resizeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];

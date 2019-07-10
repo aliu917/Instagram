@@ -19,6 +19,16 @@
 
 #pragma mark - C helper methods
 
+static void makePostImage(PFFileObject *postFile, UIImageView *postImage) {
+    UIImage *image = [[UIImage alloc] init];
+    [postFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
+        if (!data) {
+            return NSLog(@"%@", error);
+        }
+        postImage.image = [UIImage imageWithData:data];
+    }];
+}
+
 static NSString * formatDate(NSDate *createdAtOriginalString) {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     //[formatter setFormatterBehavior:NSDateFormatterBehavior10_4];
@@ -50,7 +60,8 @@ static NSString * formatDate(NSDate *createdAtOriginalString) {
     self.username.text = self.post.author.username;
     self.dateLabel.text = formatDate(self.post.createdAt);
     self.caption.text = self.post.caption;
-    [self makePostImage:self.post.image];
+    //[self makePostImage:self.post.image];
+    makePostImage(self.post.image, self.postImage);
 }
 
 #pragma mark - PostDetailsViewController helper function

@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface InstagramHelper : NSObject
 
-//+(UIImage *) makePostImage: (PFFileObject *) postFile;
+NSString * formatDate(NSDate *createdAtOriginalString);
 
 @end
 

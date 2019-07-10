@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *selectImageView;
 @property (weak, nonatomic) IBOutlet UITextView *caption;
 @property (strong, nonatomic) UIImage *postImage;
+//@property (strong, nonatomic) PFUser *user;
 
 @end
 
@@ -34,6 +35,7 @@ static UIImage * resizeImage(UIImage *image, CGSize size) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    //self.user.userPosts = [[NSMutableArray alloc] init];
 }
 
 - (IBAction)getPicture:(id)sender {
