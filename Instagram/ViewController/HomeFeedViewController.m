@@ -71,7 +71,7 @@ static void setImageBar(UINavigationItem *navigationItem) {
     self.posts = [[NSMutableArray alloc] init];
     setImageBar(self.navigationItem);
     //[self setImageBar];
-    [self fetchPostsWithFilter:nil];
+    [self fetchPosts];
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(fetchPosts) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview: self.refreshControl];
@@ -147,17 +147,24 @@ static void setImageBar(UINavigationItem *navigationItem) {
 
 - (IBAction)didTapLogout:(id)sender {
     [PFUser logOutInBackgroundWithBlock:^(NSError * _Nullable error) {
-        // PFUser.current() will now be nil
+        if(PFUser.currentUser == nil) {
+            AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            LoginViewController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"LoginViewController"];
+            appDelegate.window.rootViewController = loginViewController;
+            
+            NSLog(@"User logged out successfully");
+        } else {
+            NSLog(@"Error logging out: %@", error);
+        }
     }];
-    AppDelegate *appDelegateTemp = (AppDelegate *) [UIApplication sharedApplication].delegate;
-    
-    LoginViewController* loginController = [[UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"LoginViewController"];
-    
-    UINavigationController* navigation = [[UINavigationController alloc] initWithRootViewController:loginController];
-    appDelegateTemp.window.rootViewController = navigation;
 }
 
 #pragma mark - HomeFeedViewController helper functions
+
+- (void) fetchPosts {
+    [self fetchPostsWithFilter: nil];
+}
 
 - (void) fetchPostsWithFilter: (NSDate *) lastDate {
     PFQuery *postQuery = [Post query];
@@ -170,8 +177,12 @@ static void setImageBar(UINavigationItem *navigationItem) {
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [postQuery findObjectsInBackgroundWithBlock:^(NSArray<Post *> * _Nullable posts, NSError * _Nullable error) {
         if (posts) {
-            self.isMoreDataLoading = false;
-            [self.posts addObjectsFromArray:posts];
+            if (lastDate) {
+                self.isMoreDataLoading = false;
+                [self.posts addObjectsFromArray:posts];
+            } else {
+                self.posts = posts;
+            }
             [self.tableView reloadData];
         }
         else {

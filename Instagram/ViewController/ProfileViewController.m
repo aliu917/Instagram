@@ -8,6 +8,9 @@
 
 #import "ProfileViewController.h"
 #import "Parse/Parse.h"
+#import "Post.h"
+#import "UserPostCollectionCell.h"
+#import "PostDetailsViewController.h"
 
 @interface ProfileViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
 
@@ -17,7 +20,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *followerCount;
 @property (weak, nonatomic) IBOutlet UILabel *followingCount;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
-@property (strong, nonatomic) PFUser *user;
+@property (strong, nonatomic) NSArray *posts;
 
 @end
 
@@ -26,10 +29,29 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.user = [PFUser currentUser];
+    
+    
+    PFFileObject *image = [self.user objectForKey:@"image"];
+    
+    //FIX LATER
+    [image getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
+        if (!data) {
+            return NSLog(@"%@", error);
+        }
+        self.profilePhoto.image = [UIImage imageWithData:data];
+    }];
+
+    
+    
+    
+    
+    
+    
     self.username.text = self.user.username;
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
     [self formatLayout];
+    [self fetchUserPosts];
 }
 
 - (IBAction)changeProfilePicture:(id)sender {
@@ -49,36 +71,70 @@
     UIImage *originalImage = info[UIImagePickerControllerOriginalImage];
     UIImage *editedImage = info[UIImagePickerControllerEditedImage];
     self.profilePhoto.image = editedImage;
+    NSData *imageData = UIImageJPEGRepresentation(editedImage, 1);
+    PFFileObject *imageFile = [PFFileObject fileObjectWithName:@"image.png" data: imageData];
+    [imageFile saveInBackground];
+    [self.user setObject:imageFile forKey:@"image"];
+    [self.user saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (!error) {
+            
+        }
+    }];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    UserPostCollectionCell *tappedCell = sender;
+    PostDetailsViewController *postDetailsViewController = [segue destinationViewController];
+    postDetailsViewController.post = tappedCell.post;
 }
-*/
+
 
 - (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    <#code#>
+    UserPostCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"UserPostCollectionCell" forIndexPath:indexPath];
+    [cell setImage: self.posts[indexPath.item]];
+    return cell;
 }
 
 - (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    <#code#>
+    return self.posts.count;
 }
 
 -(void) formatLayout {
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *) self.collectionView.collectionViewLayout;
     
-    layout.minimumInteritemSpacing = 5;
-    layout.minimumLineSpacing = 5;
+    layout.minimumInteritemSpacing = 0;
+    layout.minimumLineSpacing = 0;
     CGFloat postersPerLine = 3;
     CGFloat itemWidth = (self.collectionView.frame.size.width - layout.minimumInteritemSpacing * (postersPerLine - 1)) / postersPerLine;
-    CGFloat itemHeight = itemWidth * 1.5;
+    CGFloat itemHeight = itemWidth;
     layout.itemSize = CGSizeMake(itemWidth, itemHeight);
+}
+
+-(void) fetchUserPosts {
+    PFQuery *postQuery = [Post query];
+    [postQuery orderByDescending:@"createdAt"];
+    [postQuery includeKey:@"author"];
+    [postQuery whereKey:@"author" equalTo:self.user];
+    postQuery.limit = 20;
+    //[MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [postQuery findObjectsInBackgroundWithBlock:^(NSArray<Post *> * _Nullable posts, NSError * _Nullable error) {
+        if (posts) {
+            //self.isMoreDataLoading = false;
+            //[self.posts addObjectsFromArray:posts];
+            self.posts = posts;
+            [self.collectionView reloadData];
+        }
+        else {
+            NSLog(@"%@", error.localizedDescription);
+        }
+        //[self.refreshControl endRefreshing];
+        //[MBProgressHUD hideHUDForView:self.view animated:YES];
+    }];
 }
 
 @end

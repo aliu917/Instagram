@@ -46,10 +46,40 @@ static NSString * formatDate(NSDate *createdAtOriginalString) {
     NSLog(@"setPost called");
     _post = post;
     self.username.text = post.author.username;
-    self.comment.text = [post.author.username stringByAppendingString: post.caption];
+    if (post.author.username && post.caption) {
+        self.comment.text = [post.author.username stringByAppendingString: post.caption];
+    } else {
+        self.comment.text = post.caption;
+    }
     self.dateLabel.text = formatDate(self.post.createdAt);
     [self makePostImage: post.image];
+    
+    
+    //Fix later
+    
+    PFFileObject *image = [post.author objectForKey:@"image"];
+    
+    //FIX LATER
+    if (image) {
+        [image getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
+            if (!data) {
+                return NSLog(@"%@", error);
+            }
+            self.profilePicture.image = [UIImage imageWithData:data];
+        }];
+    }
+    
+    
+    //self.profilePicture.image = [post.author objectForKey:@"image"];
     //self.postImage.image = post.image;
+}
+
+- (IBAction)didTapLike:(id)sender {
+    if (self.favorited) {
+        self.favoriteCount -= 1;
+    } else {
+        self.favoriteCount += 1;
+    }
 }
 
 /*

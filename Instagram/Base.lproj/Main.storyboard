@@ -262,7 +262,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fnp-Nz-B20" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-904.34782608695662" y="3724.5535714285711"/>
+            <point key="canvasLocation" x="354" y="3808"/>
         </scene>
         <!--Home Feed View Controller-->
         <scene sceneID="53o-9p-H8b">
@@ -303,7 +303,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profile-icon" translatesAutoresizingMaskIntoConstraints="NO" id="Kwr-SC-YRM">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profile-icon" translatesAutoresizingMaskIntoConstraints="NO" id="Kwr-SC-YRM">
                                                     <rect key="frame" x="10" y="10" width="35" height="35"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="35" id="F9M-6c-PYS"/>
@@ -314,6 +314,9 @@
                                                     <rect key="frame" x="28" y="484" width="30" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" image="favor-icon-1"/>
+                                                    <connections>
+                                                        <action selector="didTapLike:" destination="IBr-Mn-Ghw" eventType="touchUpInside" id="UKr-DJ-THV"/>
+                                                    </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dkc-Ql-NQo">
                                                     <rect key="frame" x="100" y="484" width="30" height="30"/>
@@ -352,7 +355,7 @@
                                             <outlet property="comment" destination="BH7-Ke-FqV" id="87b-WO-Fnc"/>
                                             <outlet property="dateLabel" destination="I6O-ok-e2o" id="QXD-VY-WYb"/>
                                             <outlet property="postImage" destination="7jj-5v-pef" id="gg0-ah-iNE"/>
-                                            <outlet property="profilePicture" destination="ciu-Or-01V" id="ery-WK-nHs"/>
+                                            <outlet property="profilePicture" destination="Kwr-SC-YRM" id="Y22-89-XC4"/>
                                             <outlet property="username" destination="LiK-fW-rvZ" id="J0y-Re-4KT"/>
                                             <segue destination="8xC-1E-5XK" kind="show" id="G1b-CY-oka"/>
                                         </connections>
@@ -540,7 +543,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="blue-circle" translatesAutoresizingMaskIntoConstraints="NO" id="pF1-cA-pzc">
-                                <rect key="frame" x="115" y="185" width="37" height="31"/>
+                                <rect key="frame" x="102" y="187" width="37" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hpu-Rt-EdS">
@@ -573,6 +576,10 @@
                                                 </imageView>
                                             </subviews>
                                         </view>
+                                        <connections>
+                                            <outlet property="postImage" destination="kcu-85-SgX" id="CiZ-5M-8Zc"/>
+                                            <segue destination="8xC-1E-5XK" kind="show" id="xPF-Vw-63v"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
@@ -624,4 +631,7 @@
         <image name="profile_tab" width="25" height="25"/>
         <image name="reply-icon" width="30" height="30"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="G1b-CY-oka"/>
+    </inferredMetricsTieBreakers>
 </document>
