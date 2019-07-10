@@ -30,6 +30,7 @@
     [super viewDidLoad];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
+    [self setImageBar];
     [self fetchPosts];
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(fetchPosts) forControlEvents:UIControlEventValueChanged];
@@ -126,6 +127,15 @@
         }
         [self.refreshControl endRefreshing];
     }];
+}
+
+- (void) setImageBar {
+    UIImage *img = [UIImage imageNamed:@"instagramLetters.png"];
+    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+    [imgView setImage:img];
+    // setContent mode aspect fit
+    [imgView setContentMode:UIViewContentModeScaleAspectFit];
+    self.navigationItem.titleView = imgView;
 }
 /*
 - (UIImage *)resizeImage:(UIImage *)image withSize:(CGSize)size {

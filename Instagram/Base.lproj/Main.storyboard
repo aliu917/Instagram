@@ -263,7 +263,7 @@
             </objects>
             <point key="canvasLocation" x="-904.34782608695662" y="3724.5535714285711"/>
         </scene>
-        <!--Home Feed-->
+        <!--Home Feed View Controller-->
         <scene sceneID="53o-9p-H8b">
             <objects>
                 <viewController storyboardIdentifier="HomeFeedViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ab3-7T-vfl" customClass="HomeFeedViewController" sceneMemberID="viewController">
@@ -308,7 +308,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="Cwx-v7-nBA"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Home Feed" id="WNk-hB-uKf">
+                    <navigationItem key="navigationItem" id="WNk-hB-uKf">
                         <barButtonItem key="leftBarButtonItem" title="logout" id="rDe-D9-572">
                             <connections>
                                 <action selector="didTapLogout:" destination="ab3-7T-vfl" id="szH-r1-W8e"/>
