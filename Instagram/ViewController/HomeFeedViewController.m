@@ -24,16 +24,51 @@
 
 @end
 
+#pragma mark - C helper functions
+
+/*
+void *refToSelf;
+
+static void fetchPostsWithFilter(NSDate *lastDate) {
+    PFQuery *postQuery = [Post query];
+    [postQuery orderByDescending:@"createdAt"];
+    [postQuery includeKey:@"author"];
+    if (lastDate) {
+        [postQuery whereKey:@"createdAt" lessThan:lastDate];
+    }
+    postQuery.limit = 20;
+    [MBProgressHUD showHUDAddedTo:refToSelf.view animated:YES];
+    [postQuery findObjectsInBackgroundWithBlock:^(NSArray<Post *> * _Nullable posts, NSError * _Nullable error) {
+        if (posts) {
+            refToSelf.isMoreDataLoading = false;
+            [refToSelf.posts addObjectsFromArray:posts];
+            [refToSelf.tableView reloadData];
+        }
+        else {
+            NSLog(@"%@", error.localizedDescription);
+        }
+        [refToSelf.refreshControl endRefreshing];
+        [MBProgressHUD hideHUDForView:refToSelf.view animated:YES];
+    }];
+}
+ */
+
 @implementation HomeFeedViewController
 
 #pragma mark - HomeFeedViewController lifecycle
+/*
+- (id) init {
+    self = [super init];
+    refToSelf = self;
+}*/
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
+    self.posts = [[NSMutableArray alloc] init];
     [self setImageBar];
-    [self fetchPosts];
+    [self fetchPostsWithFilter:nil];
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(fetchPosts) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview: self.refreshControl];
@@ -59,36 +94,15 @@
         int scrollOffsetThreshold = scrollViewContentHeight - self.tableView.bounds.size.height;
         if(scrollView.contentOffset.y > scrollOffsetThreshold && self.tableView.isDragging) {
             self.isMoreDataLoading = true;
-            [self loadMoreData];
+            Post *lastPost = [self.posts lastObject];
+            NSDate *lastDate = lastPost.createdAt;
+            [self fetchPostsWithFilter:lastDate];
         }
     }
 }
-
+/*
 -(void)loadMoreData{
-    
-    // ... Create the NSURLRequest (myRequest) ...
-    
-    // Configure session so that completion handler is executed on main UI thread
-    /*NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    
-    NSURLSession *session  = [NSURLSession sessionWithConfiguration:configuration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
-    
-    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *requestError) {
-        if (requestError != nil) {
-            
-        }
-        else
-        {
-            // Update flag
-            self.isMoreDataLoading = false;
-            
-            // ... Use the new data to update the data source ...
-            
-            // Reload the tableView now that there is new data
-            [self.tableView reloadData];
-        }
-    }];
-    [task resume];*/
+ 
     Post *lastPost = [self.posts lastObject];
     NSDate *lastDate = lastPost.createdAt;
     PFQuery *query = [PFQuery queryWithClassName:@"Post"];
@@ -109,7 +123,7 @@
         [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
 }
-
+*/
 /*
 #pragma mark - Action: camera segue to UIImagePickerController
 
@@ -142,6 +156,30 @@
 
 #pragma mark - HomeFeedViewController helper functions
 
+
+- (void) fetchPostsWithFilter: (NSDate *) lastDate {
+    PFQuery *postQuery = [Post query];
+    [postQuery orderByDescending:@"createdAt"];
+    [postQuery includeKey:@"author"];
+    if (lastDate) {
+        [postQuery whereKey:@"createdAt" lessThan:lastDate];
+    }
+    postQuery.limit = 20;
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [postQuery findObjectsInBackgroundWithBlock:^(NSArray<Post *> * _Nullable posts, NSError * _Nullable error) {
+        if (posts) {
+            self.isMoreDataLoading = false;
+            [self.posts addObjectsFromArray:posts];
+            [self.tableView reloadData];
+        }
+        else {
+            NSLog(@"%@", error.localizedDescription);
+        }
+        [self.refreshControl endRefreshing];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+    }];
+}
+/*
 - (void) fetchPosts {
     PFQuery *postQuery = [Post query];
     [postQuery orderByDescending:@"createdAt"];
@@ -162,7 +200,7 @@
         [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
 }
-
+*/
 - (void) setImageBar {
     UIImage *img = [UIImage imageNamed:@"instagramLetters.png"];
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];

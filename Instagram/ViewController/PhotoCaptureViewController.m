@@ -17,13 +17,23 @@
 
 @end
 
+static UIImage * resizeImage(UIImage *image, CGSize size) {
+    UIImageView *resizeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
+    resizeImageView.contentMode = UIViewContentModeScaleAspectFill;
+    resizeImageView.image = image;
+    UIGraphicsBeginImageContext(size);
+    [resizeImageView.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+
 @implementation PhotoCaptureViewController
 
 #pragma mark - PhotoCaptureViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
 }
 
 - (IBAction)getPicture:(id)sender {
@@ -43,12 +53,9 @@
 #pragma mark - UIImagePickerController delegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
-    
     UIImage *originalImage = info[UIImagePickerControllerOriginalImage];
     UIImage *editedImage = info[UIImagePickerControllerEditedImage];
-    //self.selectImageView.image = [self resizeImage:editedImage withSize:CGSizeMake(400, 400)];
-    
-    self.postImage = [self resizeImage:editedImage withSize: CGSizeMake(400, 400)];
+    self.postImage = resizeImage(editedImage, CGSizeMake(400, 400));
     self.selectImageView.image = self.postImage;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -64,20 +71,18 @@
 
 #pragma mark - PhotoCaptureViewController helper functions
 
+/*
 - (UIImage *)resizeImage:(UIImage *)image withSize:(CGSize)size {
     UIImageView *resizeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
-    
     resizeImageView.contentMode = UIViewContentModeScaleAspectFill;
     resizeImageView.image = image;
-    
     UIGraphicsBeginImageContext(size);
     [resizeImageView.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    
     return newImage;
 }
-
+*/
 /*
 -(CGSize *) makeCGSize: (UIImage *) image {
     CGSize imageSize = CGSizeMake(image.size.width * image.scale, image.size.height * image.scale);
