@@ -99,7 +99,7 @@
     [PFUser logOutInBackgroundWithBlock:^(NSError * _Nullable error) {
         // PFUser.current() will now be nil
     }];
-    AppDelegate *appDelegateTemp = [[UIApplication sharedApplication]delegate];
+    AppDelegate *appDelegateTemp = (AppDelegate *) [UIApplication sharedApplication].delegate;
     
     LoginViewController* loginController = [[UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"LoginViewController"];
     

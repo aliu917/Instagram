@@ -8,6 +8,8 @@
 	<string>Need library access to upload images</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
 			<key>myinstagramaliu18.heroku.com</key>
