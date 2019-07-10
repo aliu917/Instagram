@@ -29,6 +29,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.user = [PFUser currentUser];
+    self.postCount.text = [@(0) stringValue];
+    self.followerCount.text = [@(0) stringValue];
+    self.followingCount.text = [@(0) stringValue];
     
     
     PFFileObject *image = [self.user objectForKey:@"image"];
@@ -120,7 +123,7 @@
     [postQuery orderByDescending:@"createdAt"];
     [postQuery includeKey:@"author"];
     [postQuery whereKey:@"author" equalTo:self.user];
-    postQuery.limit = 20;
+    //postQuery.limit = 20;
     //[MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [postQuery findObjectsInBackgroundWithBlock:^(NSArray<Post *> * _Nullable posts, NSError * _Nullable error) {
         if (posts) {
@@ -128,6 +131,8 @@
             //[self.posts addObjectsFromArray:posts];
             self.posts = posts;
             [self.collectionView reloadData];
+            
+            self.postCount.text = [@(self.posts.count) stringValue];
         }
         else {
             NSLog(@"%@", error.localizedDescription);

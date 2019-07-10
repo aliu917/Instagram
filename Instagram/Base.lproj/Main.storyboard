@@ -353,7 +353,9 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="comment" destination="BH7-Ke-FqV" id="87b-WO-Fnc"/>
+                                            <outlet property="commentButton" destination="Dkc-Ql-NQo" id="6QJ-kE-BGu"/>
                                             <outlet property="dateLabel" destination="I6O-ok-e2o" id="QXD-VY-WYb"/>
+                                            <outlet property="likeButton" destination="wYz-J7-Dt9" id="FMX-1h-E21"/>
                                             <outlet property="postImage" destination="7jj-5v-pef" id="gg0-ah-iNE"/>
                                             <outlet property="profilePicture" destination="Kwr-SC-YRM" id="Y22-89-XC4"/>
                                             <outlet property="username" destination="LiK-fW-rvZ" id="J0y-Re-4KT"/>

@@ -20,7 +20,7 @@
 #pragma mark - C helper methods
 
 static void makePostImage(PFFileObject *postFile, UIImageView *postImage) {
-    UIImage *image = [[UIImage alloc] init];
+    //UIImage *image = [[UIImage alloc] init];
     [postFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
         if (!data) {
             return NSLog(@"%@", error);
@@ -91,7 +91,7 @@ static NSString * formatDate(NSDate *createdAtOriginalString) {
 }*/
 
 -(void) makePostImage: (PFFileObject *) postFile {
-    UIImage *image = [[UIImage alloc] init];
+    //UIImage *image = [[UIImage alloc] init];
     [postFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
         if (!data) {
             return NSLog(@"%@", error);

@@ -77,9 +77,23 @@ static NSString * formatDate(NSDate *createdAtOriginalString) {
 - (IBAction)didTapLike:(id)sender {
     if (self.favorited) {
         self.favoriteCount -= 1;
+        NSNumber
+        *prevCount = [self.post objectForKey:@"likeCount"];
+        NSNumber *newCount = [self increaseCount:prevCount by:-1];
+        [self.post setObject:newCount forKey:@"likeCount"];
+        [self.likeButton setImage: [UIImage imageNamed:@"favor-icon"] forState:UIControlStateNormal];
     } else {
         self.favoriteCount += 1;
+        NSNumber *prevCount = [self.post objectForKey:@"likeCount"];
+        NSNumber *newCount = [self increaseCount:prevCount by:1];
+        [self.post setObject:newCount forKey:@"likeCount"];
+        [self.likeButton setImage: [UIImage imageNamed:@"favor-icon-red"] forState:UIControlStateNormal];
     }
+}
+
+- (NSNumber *) increaseCount: (NSNumber *) number by: (int) increment {
+    NSNumber *newNumber = @(number.longLongValue + increment);
+    return newNumber;
 }
 
 /*
