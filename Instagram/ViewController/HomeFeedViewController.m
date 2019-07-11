@@ -273,8 +273,8 @@ static void setImageBar(UINavigationItem *navigationItem) {
 }
 */
 
-- (void)postCell:(PostCell *)postCell didTap:(PFUser *)user{
-    [self performSegueWithIdentifier:@"profileSegue" sender:user];
+- (void)performSegue:(NSString *)segueID didTap:(NSObject *)object{
+    [self performSegueWithIdentifier:segueID sender:object];
 }
 
 
@@ -286,11 +286,13 @@ static void setImageBar(UINavigationItem *navigationItem) {
     // Pass the selected object to the new view controller.
     if ([segue.identifier isEqualToString:@"profileSegue"]) {
         ProfileViewController *profileViewController = [segue destinationViewController];
-        profileViewController.user = sender;
+        profileViewController.user = (PFUser*) sender;
     } else {
-        PostCell *tappedCell = sender;
+        //PostCell *tappedCell = sender;
         PostDetailsViewController *postDetailsViewController = [segue destinationViewController];
-        postDetailsViewController.post = tappedCell.post;
+        //postDetailsViewController.post = tappedCell.post;
+        postDetailsViewController.post = (Post*) sender;
+
     }
 }
 

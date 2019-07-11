@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol PostCellDelegate
 
-- (void)postCell:(PostCell *) postCell didTap: (PFUser *)user;
+- (void)performSegue:(NSString *)segueID didTap:(PFUser *)user;
 
 @end
 

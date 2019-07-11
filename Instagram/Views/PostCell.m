@@ -97,6 +97,10 @@ static NSString * formatDate(NSDate *createdAtOriginalString) {
     //self.postImage.image = post.image;
 }
 
+- (IBAction)segueToDetails:(id)sender {
+    [self.delegate performSegue:@"detailsSegue" didTap:self.post];
+}
+
 - (NSMutableAttributedString *) makeString: (NSString *) username withAppend: (NSString *) caption {
     NSString *frontAddSpace = [username stringByAppendingString:@" "];
     NSString *fullText = [frontAddSpace stringByAppendingString:caption];
@@ -135,7 +139,7 @@ static NSString * formatDate(NSDate *createdAtOriginalString) {
 }
 
 - (void) didTapUserProfile:(UITapGestureRecognizer *)sender{
-    [self.delegate postCell:self didTap:self.post.author];
+    [self.delegate performSegue:@"profileSegue" didTap:self.post.author];
 }
 
 

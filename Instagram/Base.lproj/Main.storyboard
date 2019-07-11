@@ -338,19 +338,6 @@
                                                         <constraint firstAttribute="height" constant="35" id="m1X-AB-SQt"/>
                                                     </constraints>
                                                 </imageView>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wYz-J7-Dt9">
-                                                    <rect key="frame" x="20" y="482" width="35" height="35"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" image="likeButton"/>
-                                                    <connections>
-                                                        <action selector="didTapLike:" destination="IBr-Mn-Ghw" eventType="touchUpInside" id="UKr-DJ-THV"/>
-                                                    </connections>
-                                                </button>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dkc-Ql-NQo">
-                                                    <rect key="frame" x="71" y="469" width="60" height="60"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" image="commentButton"/>
-                                                </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I6O-ok-e2o">
                                                     <rect key="frame" x="312" y="489" width="82" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -369,6 +356,26 @@
                                                     <rect key="frame" x="132" y="183" width="150" height="150"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </imageView>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Edh-qP-huI">
+                                                    <rect key="frame" x="4" y="469" width="410" height="149"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <connections>
+                                                        <action selector="segueToDetails:" destination="IBr-Mn-Ghw" eventType="touchUpInside" id="TbM-wl-Ohq"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wYz-J7-Dt9">
+                                                    <rect key="frame" x="20" y="482" width="35" height="35"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <state key="normal" image="likeButton"/>
+                                                    <connections>
+                                                        <action selector="didTapLike:" destination="IBr-Mn-Ghw" eventType="touchUpInside" id="UKr-DJ-THV"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dkc-Ql-NQo">
+                                                    <rect key="frame" x="71" y="469" width="60" height="60"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <state key="normal" image="commentButton"/>
+                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="7jj-5v-pef" firstAttribute="top" secondItem="3eF-zm-f7R" secondAttribute="bottom" constant="0.5" id="6ns-nE-me0"/>
@@ -411,6 +418,7 @@
                     <connections>
                         <outlet property="tableView" destination="4KB-ml-zGn" id="WZx-3i-bw6"/>
                         <segue destination="mX0-UN-ncp" kind="show" identifier="profileSegue" id="w8b-TB-USK"/>
+                        <segue destination="8xC-1E-5XK" kind="show" identifier="detailsSegue" id="blq-4o-PP3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KZh-U4-gUW" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -669,5 +677,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="w8b-TB-USK"/>
+        <segue reference="blq-4o-PP3"/>
     </inferredMetricsTieBreakers>
 </document>
