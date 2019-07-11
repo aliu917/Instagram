@@ -24,10 +24,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UIButton *commentButton;
 @property (weak, nonatomic) IBOutlet UIImageView *likeImage;
 @property (strong, nonatomic) Post *post;
-@property (nonatomic) BOOL favorited;
-@property (nonatomic) int favoriteCount;
+//@property (nonatomic) BOOL favorited;
+//@property (nonatomic) int favoriteCount;
 @property (nonatomic, weak) id<PostCellDelegate> delegate;
-@property (nonatomic) BOOL doubleTapLike;
+//@property (nonatomic) BOOL doubleTapLike;
 
 - (void) setPost: (Post *) post;
 

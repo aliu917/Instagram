@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "Post.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,6 +17,13 @@ NS_ASSUME_NONNULL_BEGIN
 //NSString * formatDate(NSDate *createdAtOriginalString);
 + (NSString *) formatDate: (NSDate *)createdAtOriginalString;
 + (void) setupGR: (UITapGestureRecognizer *) tgr onImage: (UIImageView *) imageView withTaps: (int) numTaps;
++(void) makeProfileImage: (UIImageView *) profilePicture withPost: (Post *) post;
++ (NSMutableAttributedString *) makeString: (NSString *) username withAppend: (NSString *) caption;
++(void) makePost: (UIImageView *) postImage forImage: (PFFileObject *) postFile;
++(void) initialButtonSetting: (UIButton *)likeButton forPost: (Post *)post;
++ (void) makeComment:(UILabel *)comment withPost:(Post *) post;
++(void) doLikeAction: (UIButton *) likeButton forPost: (Post *) post allowUnlike: (BOOL) allow;
+
 
 
 @end
