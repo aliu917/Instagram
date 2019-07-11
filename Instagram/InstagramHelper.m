@@ -103,8 +103,11 @@ void instantiateGestureRecognizer(UIImageView *postImage) {
 
 +(void) initialButtonSetting: (UIButton *)likeButton forPost: (Post *)post {
     PFUser *currUser = [PFUser currentUser];
-    NSMutableArray *likedUsers = [post objectForKey:@"likedUsers"];
-    if ([likedUsers containsObject:currUser.username]) {
+    //NSMutableArray *likedUsers = [post objectForKey:@"likedUsers"];
+    NSMutableDictionary *likedUsersDict = [post objectForKey:@"likedUsersDict"];
+    //NSDictionary *tempDict = likedUsersDict;
+    //if ([likedUsers containsObject:currUser.username]) {
+    if ([likedUsersDict objectForKey:currUser.username]) {
         [likeButton setImage: [UIImage imageNamed:@"redLikButton"] forState:UIControlStateNormal];
     }
 }
@@ -112,8 +115,9 @@ void instantiateGestureRecognizer(UIImageView *postImage) {
 +(int) doLikeAction: (UIButton *) likeButton forPost: (Post *) post allowUnlike: (BOOL) allow {
     int incrChange = 0;
     PFUser *currUser = [PFUser currentUser];
-    NSMutableArray *likedUsers = [post objectForKey:@"likedUsers"];
-    if (!likedUsers) {
+    //NSMutableArray *likedUsers = [post objectForKey:@"likedUsers"];
+    NSMutableDictionary *likedUsersDict = [post objectForKey:@"likedUsersDict"];
+    /*if (!likedUsers) {
         likedUsers = [[NSMutableArray alloc] init];
     }
     if ([likedUsers containsObject:currUser.username]) {
@@ -127,7 +131,22 @@ void instantiateGestureRecognizer(UIImageView *postImage) {
         incrChange = 1;
         [likeButton setImage: [UIImage imageNamed:@"redLikeButton"] forState:UIControlStateNormal];
     }
-    [post setObject:likedUsers forKey:@"likedUsers"];
+    [post setObject:likedUsers forKey:@"likedUsers"];*/
+    if (!likedUsersDict) {
+        likedUsersDict = [[NSMutableDictionary alloc] init];
+    }
+    if ([likedUsersDict objectForKey:currUser.username]) {
+        if (allow) {
+            [likedUsersDict removeObjectForKey:currUser.username];
+            incrChange = -1;
+            [likeButton setImage: [UIImage imageNamed:@"likeButton"] forState:UIControlStateNormal];
+        }
+    } else {
+        [likedUsersDict setObject: currUser forKey: currUser.username];
+        incrChange = 1;
+        [likeButton setImage: [UIImage imageNamed:@"redLikeButton"] forState:UIControlStateNormal];
+    }
+    [post setObject:likedUsersDict forKey:@"likedUsersDict"];
     [post saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (!error) {
             
