@@ -14,8 +14,9 @@
 #import "PostCell.h"
 #import "PostDetailsViewController.h"
 #import "MBProgressHUD.h"
+#import "ProfileViewController.h"
 
-@interface HomeFeedViewController () <UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate>
+@interface HomeFeedViewController () <UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, PostCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
@@ -69,6 +70,10 @@ static void setImageBar(UINavigationItem *navigationItem) {
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.posts = [[NSMutableArray alloc] init];
+    
+    //[self instantiateGesureRecognizer];
+    
+    //[singleTap requireGestureRecognizerToFail:doubleTap];
     setImageBar(self.navigationItem);
     //[self setImageBar];
     [self fetchPosts];
@@ -76,11 +81,31 @@ static void setImageBar(UINavigationItem *navigationItem) {
     [self.refreshControl addTarget:self action:@selector(fetchPosts) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview: self.refreshControl];
 }
+/*
+- (void) instantiateGesureRecognizer {
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doSingleTap)];
+    singleTap.numberOfTapsRequired = 1;
+    [self.view addGestureRecognizer:singleTap];
+    
+    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doDoubleTap)];
+    doubleTap.numberOfTapsRequired = 2;
+    [self.view addGestureRecognizer:doubleTap];
 
+}
+
+- (void) doDoubleTap {
+    
+}
+
+-(void) doSingleTap {
+    //[self performSegueWithIdentifier:@"homeFeedSegue" sender:nil];
+}
+*/
 #pragma mark - UITableView delegate & data source
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     PostCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PostCell"];
+    cell.delegate = self;
     [cell setPost: self.posts[indexPath.row]];
     return cell;
 }
@@ -245,6 +270,10 @@ static void setImageBar(UINavigationItem *navigationItem) {
 }
 */
 
+- (void)postCell:(PostCell *)postCell didTap:(PFUser *)user{
+    [self performSegueWithIdentifier:@"profileSegue" sender:user];
+}
+
 
 #pragma mark - Navigation
 
@@ -252,9 +281,14 @@ static void setImageBar(UINavigationItem *navigationItem) {
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
-    PostCell *tappedCell = sender;
-    PostDetailsViewController *postDetailsViewController = [segue destinationViewController];
-    postDetailsViewController.post = tappedCell.post;
+    if ([segue.identifier isEqualToString:@"profileSegue"]) {
+        ProfileViewController *profileViewController = [segue destinationViewController];
+        profileViewController.user = sender;
+    } else {
+        PostCell *tappedCell = sender;
+        PostDetailsViewController *postDetailsViewController = [segue destinationViewController];
+        postDetailsViewController.post = tappedCell.post;
+    }
 }
 
 

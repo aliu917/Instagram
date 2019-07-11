@@ -11,6 +11,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol PostCellDelegate;
+
 @interface PostCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *postImage;
@@ -23,8 +25,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) Post *post;
 @property (nonatomic) BOOL favorited;
 @property (nonatomic) int favoriteCount;
+@property (nonatomic, weak) id<PostCellDelegate> delegate;
 
 - (void) setPost: (Post *) post;
+
+@end
+
+@protocol PostCellDelegate
+
+- (void)postCell:(PostCell *) postCell didTap: (PFUser *)user;
 
 @end
 

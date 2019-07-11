@@ -8,13 +8,14 @@
 
 #import "PostDetailsViewController.h"
 
-@interface PostDetailsViewController ()
+@interface PostDetailsViewController () <UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *postImage;
 @property (weak, nonatomic) IBOutlet UILabel *username;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *caption;
 @property (weak, nonatomic) IBOutlet UILabel *likeCount;
+@property (weak, nonatomic) IBOutlet UIImageView *likeImage;
 
 @end
 
@@ -62,13 +63,43 @@ static NSString * formatDate(NSDate *createdAtOriginalString) {
     self.dateLabel.text = formatDate(self.post.createdAt);
     self.caption.text = self.post.caption;
     self.likeCount.text = [self makeLikeCount];
+    
+    
     //[self makePostImage:self.post.image];
     makePostImage(self.post.image, self.postImage);
+    [self instantiateGestureRecognizer];
+}
+
+- (void) instantiateGestureRecognizer {
+    /*UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doSingleTap)];
+    singleTap.numberOfTapsRequired = 1;
+    [self.postImage addGestureRecognizer:singleTap];*/
+    
+    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doDoubleTap)];
+    doubleTap.numberOfTapsRequired = 2;
+    [self.postImage addGestureRecognizer:doubleTap];
+    [self.postImage setUserInteractionEnabled:YES];
+    //[doubleTap release];
+}
+
+- (void) doDoubleTap {
+    [UIView animateWithDuration:0.5 animations:^{
+        self.likeImage.alpha = 1.0;
+    }];
+    [UIView animateWithDuration:0.5 animations:^{
+        self.likeImage.alpha = 0.0;
+    }];
+}
+
+-(void) doSingleTap {
+    //[self performSegueWithIdentifier:@"homeFeedSegue" sender:nil];
 }
 
 - (NSString *) makeLikeCount {
-    NSNumber *numLikes = [self.post objectForKey:@"likeCount"];
-    NSString *numLikeString = [numLikes stringValue];
+    //NSNumber *numLikes = [self.post objectForKey:@"likeCount"];
+    NSArray *likedUsers = [self.post objectForKey:@"likedUsers"];
+    long count = likedUsers.count;
+    NSString *numLikeString = [@(count) stringValue];
     NSString *likeString = [NSString stringWithFormat:@"%@ likes", numLikeString];
     return likeString;
 }

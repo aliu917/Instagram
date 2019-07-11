@@ -39,7 +39,9 @@ static NSString * formatDate(NSDate *createdAtOriginalString) {
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    // Initialization code
+    UITapGestureRecognizer *profileTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTapUserProfile:)];
+    [self.profilePicture addGestureRecognizer:profileTapGestureRecognizer];
+    [self.profilePicture setUserInteractionEnabled:YES];
 }
 
 - (void) setPost: (Post *) post {
@@ -74,23 +76,64 @@ static NSString * formatDate(NSDate *createdAtOriginalString) {
     //self.postImage.image = post.image;
 }
 
+- (void) didTapUserProfile:(UITapGestureRecognizer *)sender{
+    [self.delegate postCell:self didTap:self.post.author];
+}
+
+
+
+/*
+- (void) instantiateGesureRecognizer {
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doSingleTap)];
+    singleTap.numberOfTapsRequired = 1;
+    [self.view addGestureRecognizer:singleTap];
+    
+    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doDoubleTap)];
+    doubleTap.numberOfTapsRequired = 2;
+    [self.view addGestureRecognizer:doubleTap];
+    
+}
+*/
+- (void) doDoubleTap {
+    
+}
+
+-(void) doSingleTap {
+    //[self performSegueWithIdentifier:@"homeFeedSegue" sender:nil];
+}
+
 - (IBAction)didTapLike:(id)sender {
+    PFUser *currUser = [PFUser currentUser];
     if (self.favorited) {
         self.favorited = false;
         self.favoriteCount -= 1;
-        NSNumber
+        /*NSNumber
         *prevCount = [self.post objectForKey:@"likeCount"];
         NSNumber *newCount = [self increaseCount:prevCount by:-1];
-        [self.post setObject:newCount forKey:@"likeCount"];
+        [self.post setObject:newCount forKey:@"likeCount"];*/
+        NSMutableArray *likedUsers = [self.post objectForKey:@"likedUsers"];
+        [likedUsers removeObject:currUser];
+        [self.post setObject:likedUsers forKey:@"likedUsers"];
         [self.likeButton setImage: [UIImage imageNamed:@"favor-icon-1"] forState:UIControlStateNormal];
     } else {
         self.favorited = true;
         self.favoriteCount += 1;
-        NSNumber *prevCount = [self.post objectForKey:@"likeCount"];
+        /*NSNumber *prevCount = [self.post objectForKey:@"likeCount"];
         NSNumber *newCount = [self increaseCount:prevCount by:1];
-        [self.post setObject:newCount forKey:@"likeCount"];
+        [self.post setObject:newCount forKey:@"likeCount"];*/
+        NSMutableArray *likedUsers = [self.post objectForKey:@"likedUsers"];
+        if (!likedUsers) {
+            likedUsers = [[NSMutableArray alloc] init];
+        }
+        [likedUsers addObject:currUser];
+        [self.post setObject:likedUsers forKey:@"likedUsers"];
         [self.likeButton setImage: [UIImage imageNamed:@"favor-icon-red"] forState:UIControlStateNormal];
     }
+    [self.post saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (!error) {
+            
+        }
+    }];
 }
 
 - (NSNumber *) increaseCount: (NSNumber *) number by: (int) increment {

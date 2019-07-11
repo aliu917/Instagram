@@ -28,7 +28,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.user = [PFUser currentUser];
+    if (!self.user) {
+        self.user = [PFUser currentUser];
+    }
     self.postCount.text = [@(0) stringValue];
     self.followerCount.text = [@(0) stringValue];
     self.followingCount.text = [@(0) stringValue];

@@ -235,6 +235,13 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QiF-f5-Rum">
+                                <rect key="frame" x="216" y="515" width="178" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Caption" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Snf-nQ-T21">
                                 <rect key="frame" x="20" y="556" width="368" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -249,13 +256,10 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QiF-f5-Rum">
-                                <rect key="frame" x="216" y="515" width="178" height="21"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.0" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="white-heart" translatesAutoresizingMaskIntoConstraints="NO" id="NYF-HZ-kaJ">
+                                <rect key="frame" x="128" y="214" width="158" height="126"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="X5a-9i-D7e"/>
@@ -264,13 +268,14 @@
                         <outlet property="caption" destination="Snf-nQ-T21" id="6tU-Dq-v06"/>
                         <outlet property="dateLabel" destination="QiF-f5-Rum" id="w1s-jy-Mhe"/>
                         <outlet property="likeCount" destination="oH5-LN-oSZ" id="wtz-aR-4ov"/>
+                        <outlet property="likeImage" destination="NYF-HZ-kaJ" id="Coi-H7-buT"/>
                         <outlet property="postImage" destination="AZD-9q-KLJ" id="d9l-BJ-tnj"/>
                         <outlet property="username" destination="ASC-KL-iD4" id="J99-cn-MCZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fnp-Nz-B20" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="354" y="3808"/>
+            <point key="canvasLocation" x="353.62318840579712" y="3807.5892857142853"/>
         </scene>
         <!--Home Feed View Controller-->
         <scene sceneID="53o-9p-H8b">
@@ -386,6 +391,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="4KB-ml-zGn" id="WZx-3i-bw6"/>
+                        <segue destination="mX0-UN-ncp" kind="show" identifier="profileSegue" id="w8b-TB-USK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KZh-U4-gUW" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -640,8 +646,10 @@
         <image name="profile-icon" width="26" height="26"/>
         <image name="profile_tab" width="25" height="25"/>
         <image name="reply-icon" width="30" height="30"/>
+        <image name="white-heart" width="224" height="225"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="w8b-TB-USK"/>
         <segue reference="G1b-CY-oka"/>
     </inferredMetricsTieBreakers>
 </document>
