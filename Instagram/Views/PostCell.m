@@ -45,6 +45,9 @@ static void makeCommentwithPost(UILabel *comment, Post *post) {
 - (IBAction)segueToDetails:(id)sender {
     [self.delegate performSegue:@"detailsSegue" didTap:self.post];
 }
+- (IBAction)segueToComment:(id)sender {
+    [self.delegate performSegue:@"commentSegue" didTap:self.post];
+}
 
 - (IBAction)didTapLike:(id)usedButton {
     [InstagramHelper doLikeAction: self.likeButton forPost: self.post allowUnlike: YES];

@@ -15,6 +15,7 @@
 #import "PostDetailsViewController.h"
 #import "MBProgressHUD.h"
 #import "ProfileViewController.h"
+#import "CommentViewController.h"
 
 @interface HomeFeedViewController () <UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, PostCellDelegate>
 
@@ -145,7 +146,7 @@ static void setImageBar(UINavigationItem *navigationItem) {
     postQuery.limit = 20;
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [postQuery findObjectsInBackgroundWithBlock:^(NSArray<Post *> * _Nullable posts, NSError * _Nullable error) {
-        if (posts) {
+        if ([posts count] != 0) {
             if (lastDate) {
                 self.isMoreDataLoading = false;
                 [self.posts addObjectsFromArray:posts];
@@ -153,8 +154,7 @@ static void setImageBar(UINavigationItem *navigationItem) {
                 self.posts = posts;
             }
             [self.tableView reloadData];
-        }
-        else {
+        } else {
             NSLog(@"%@", error.localizedDescription);
         }
         [self.refreshControl endRefreshing];
@@ -175,7 +175,10 @@ static void setImageBar(UINavigationItem *navigationItem) {
     if ([segue.identifier isEqualToString:@"profileSegue"]) {
         ProfileViewController *profileViewController = [segue destinationViewController];
         profileViewController.user = (PFUser*) sender;
-    } else {
+    } else if ([segue.identifier isEqualToString:@"commentSegue"]) {
+        CommentViewController *commentViewController = [segue destinationViewController];
+        commentViewController.post = (Post*) sender;
+    }else {
         PostDetailsViewController *postDetailsViewController = [segue destinationViewController];
         postDetailsViewController.post = (Post*) sender;
 
