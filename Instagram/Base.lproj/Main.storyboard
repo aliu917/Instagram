@@ -581,14 +581,8 @@
                                 <rect key="frame" x="102" y="187" width="37" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hpu-Rt-EdS">
-                                <rect key="frame" x="87" y="258" width="265" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.84079501300000004" green="0.84079501300000004" blue="0.84079501300000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <state key="normal" title="Edit Profile"/>
-                            </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="mQa-R5-xiA">
-                                <rect key="frame" x="13" y="318" width="381" height="475"/>
+                                <rect key="frame" x="13" y="350" width="381" height="443"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="YYX-R0-Jyz">
@@ -618,12 +612,28 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="40E-db-KGR">
+                                <rect key="frame" x="20" y="258" width="358" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hpu-Rt-EdS">
+                                <rect key="frame" x="13" y="287" width="102" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Edit Bio"/>
+                                <connections>
+                                    <segue destination="ati-pV-qdJ" kind="presentation" identifier="editSegue" id="Rud-8A-JNt"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="28Z-ZG-2TU"/>
                     </view>
                     <navigationItem key="navigationItem" id="sRV-Hd-AVO"/>
                     <connections>
+                        <outlet property="bio" destination="40E-db-KGR" id="V24-iU-QJx"/>
                         <outlet property="collectionView" destination="mQa-R5-xiA" id="Yf8-59-Zcn"/>
                         <outlet property="followerCount" destination="C0m-C3-rxK" id="H6l-hV-VOT"/>
                         <outlet property="followingCount" destination="LYG-l2-BYq" id="vIh-Me-ZGw"/>
@@ -635,6 +645,49 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ohv-7j-pVe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1500.0000000000002" y="2976.5625"/>
+        </scene>
+        <!--Edit Profile View Controller-->
+        <scene sceneID="buK-RD-Tc1">
+            <objects>
+                <viewController id="ati-pV-qdJ" customClass="EditProfileViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="QmA-Kj-hed">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FUw-G8-4sp">
+                                <rect key="frame" x="24" y="79" width="39" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Close"/>
+                                <connections>
+                                    <action selector="didTapClose:" destination="ati-pV-qdJ" eventType="touchUpInside" id="oBN-qD-BIF"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OYk-Q5-5SD">
+                                <rect key="frame" x="358" y="79" width="34" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Save"/>
+                                <connections>
+                                    <action selector="didTapSave:" destination="ati-pV-qdJ" eventType="touchUpInside" id="jwk-vy-R60"/>
+                                </connections>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Swa-VE-stt">
+                                <rect key="frame" x="24" y="148" width="368" height="536"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="rGH-DP-qhN"/>
+                    </view>
+                    <connections>
+                        <outlet property="bioTextView" destination="Swa-VE-stt" id="7ov-d2-tu1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Zxo-En-36t" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2518.840579710145" y="2976.5625"/>
         </scene>
         <!--Profile-->
         <scene sceneID="2dg-0Y-rYM">
@@ -669,6 +722,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="w8b-TB-USK"/>
-        <segue reference="blq-4o-PP3"/>
+        <segue reference="xPF-Vw-63v"/>
     </inferredMetricsTieBreakers>
 </document>

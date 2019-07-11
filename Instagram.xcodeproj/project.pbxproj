@@ -18,6 +18,7 @@
 		C05BC86422D66AA2006CB094 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C05BC86322D66AA2006CB094 /* ProfileViewController.m */; };
 		C05BC86622D67175006CB094 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C05BC86522D67175006CB094 /* Media.xcassets */; };
 		C05BC86922D676AE006CB094 /* UserPostCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C05BC86822D676AE006CB094 /* UserPostCollectionCell.m */; };
+		C05EF12B22D78FAA003FC663 /* EditProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C05EF12A22D78FAA003FC663 /* EditProfileViewController.m */; };
 		C0F423BA22D40B8F00654B35 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0F423B922D40B8F00654B35 /* LoginViewController.m */; };
 		C0F423BD22D40C5D00654B35 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0F423BC22D40C5D00654B35 /* SignUpViewController.m */; };
 		C0F423C022D40D8400654B35 /* HomeFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0F423BF22D40D8400654B35 /* HomeFeedViewController.m */; };
@@ -72,6 +73,8 @@
 		C05BC86522D67175006CB094 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		C05BC86722D676AE006CB094 /* UserPostCollectionCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserPostCollectionCell.h; sourceTree = "<group>"; };
 		C05BC86822D676AE006CB094 /* UserPostCollectionCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserPostCollectionCell.m; sourceTree = "<group>"; };
+		C05EF12922D78FAA003FC663 /* EditProfileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditProfileViewController.h; sourceTree = "<group>"; };
+		C05EF12A22D78FAA003FC663 /* EditProfileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EditProfileViewController.m; sourceTree = "<group>"; };
 		C0F423B822D40B8F00654B35 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		C0F423B922D40B8F00654B35 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		C0F423BB22D40C5D00654B35 /* SignUpViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SignUpViewController.h; sourceTree = "<group>"; };
@@ -217,6 +220,8 @@
 				C0F423CC22D560B600654B35 /* PostDetailsViewController.m */,
 				C05BC86222D66AA2006CB094 /* ProfileViewController.h */,
 				C05BC86322D66AA2006CB094 /* ProfileViewController.m */,
+				C05EF12922D78FAA003FC663 /* EditProfileViewController.h */,
+				C05EF12A22D78FAA003FC663 /* EditProfileViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -469,6 +474,7 @@
 				C0F423CA22D5243100654B35 /* PhotoCaptureViewController.m in Sources */,
 				C0F423C722D45BBC00654B35 /* PostCell.m in Sources */,
 				C0269F2222D3FC1B00371814 /* main.m in Sources */,
+				C05EF12B22D78FAA003FC663 /* EditProfileViewController.m in Sources */,
 				C05BC86922D676AE006CB094 /* UserPostCollectionCell.m in Sources */,
 				C05BC86422D66AA2006CB094 /* ProfileViewController.m in Sources */,
 				C0269F1422D3FC1A00371814 /* AppDelegate.m in Sources */,

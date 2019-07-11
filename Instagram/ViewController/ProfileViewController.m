@@ -12,6 +12,7 @@
 #import "UserPostCollectionCell.h"
 #import "PostDetailsViewController.h"
 #import "InstagramHelper.h"
+#import "EditProfileViewController.h"
 
 @interface ProfileViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate>
 
@@ -21,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *followerCount;
 @property (weak, nonatomic) IBOutlet UILabel *followingCount;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UILabel *bio;
 @property (strong, nonatomic) NSArray *posts;
 
 @end
@@ -57,11 +59,14 @@ static void saveImageForUser(UIImage *editedImage, PFUser *user) {
     [self fetchUserPosts];
 }
 
+- (void) viewDidAppear:(BOOL)animated {
+    self.bio.text = [self.user objectForKey:@"bio"];
+}
+
 #pragma mark - edit profile image
 
 - (IBAction)changeProfilePicture:(id)sender {
     [InstagramHelper makeImagePicker: self];
-
 }
 
 #pragma mark - CollectionViewCell delegate & data source
@@ -142,9 +147,14 @@ static void saveImageForUser(UIImage *editedImage, PFUser *user) {
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    UserPostCollectionCell *tappedCell = sender;
-    PostDetailsViewController *postDetailsViewController = [segue destinationViewController];
-    postDetailsViewController.post = tappedCell.post;
+    if ([segue.identifier isEqualToString:@"editSegue"]) {
+        EditProfileViewController *editViewController = [segue destinationViewController];
+        editViewController.user = self.user;
+    } else {
+        UserPostCollectionCell *tappedCell = sender;
+        PostDetailsViewController *postDetailsViewController = [segue destinationViewController];
+        postDetailsViewController.post = tappedCell.post;
+    }
 }
 
 @end

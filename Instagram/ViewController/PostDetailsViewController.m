@@ -31,6 +31,7 @@ static NSString* makeString(long count) {
 
 static long makeLikeCount(Post *post) {
     NSArray *likedUsers = [post objectForKey:@"likedUsers"];
+    //NSDictionary *likedUsersDict = [post objectForKey:@"likedUsersDict"];
     long count = likedUsers.count;
     return count;
 }
