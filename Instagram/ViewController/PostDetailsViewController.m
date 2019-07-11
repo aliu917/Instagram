@@ -16,6 +16,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *caption;
 @property (weak, nonatomic) IBOutlet UILabel *likeCount;
 @property (weak, nonatomic) IBOutlet UIImageView *likeImage;
+@property (weak, nonatomic) IBOutlet UIButton *likeButton;
+@property (weak, nonatomic) IBOutlet UIButton *commentButton;
+@property (nonatomic) BOOL doubleTapLike;
+@property (nonatomic) long likeCountNum;
 
 @end
 
@@ -62,31 +66,74 @@ static NSString * formatDate(NSDate *createdAtOriginalString) {
     self.username.text = self.post.author.username;
     self.dateLabel.text = formatDate(self.post.createdAt);
     self.caption.text = self.post.caption;
-    self.likeCount.text = [self makeLikeCount];
-    
+    self.likeCountNum = [self makeLikeCount];
+    self.likeCount.text = [self makeString: self.likeCountNum];
     
     //[self makePostImage:self.post.image];
     makePostImage(self.post.image, self.postImage);
     [self instantiateGestureRecognizer];
 }
 
+- (void) viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    PFUser *currUser = [PFUser currentUser];
+    NSMutableArray *likedUsers = [self.post objectForKey:@"likedUsers"];
+    if ([likedUsers containsObject:currUser.username]) {
+        [self.likeButton setImage: [UIImage imageNamed:@"redLikButton"] forState:UIControlStateNormal];
+    }
+}
+
 - (void) instantiateGestureRecognizer {
-    /*UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doSingleTap)];
-    singleTap.numberOfTapsRequired = 1;
-    [self.postImage addGestureRecognizer:singleTap];*/
-    
     UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doDoubleTap)];
-    doubleTap.numberOfTapsRequired = 2;
+    doubleTap.numberOfTapsRequired = (NSInteger) 2;
     [self.postImage addGestureRecognizer:doubleTap];
     [self.postImage setUserInteractionEnabled:YES];
-    //[doubleTap release];
 }
 
 - (void) doDoubleTap {
-    [UIView animateWithDuration:0.5 animations:^{
-        self.likeImage.alpha = 1.0;
+    self.likeImage.layer.cornerRadius = self.likeImage.frame.size.width / 2;
+    self.likeImage.clipsToBounds = YES;
+    [UIView animateWithDuration:1 animations:^{
+        self.likeImage.alpha = 0.75;
     }];
-    [UIView animateWithDuration:0.5 animations:^{
+    [self performSelector:@selector(fadeOut) withObject:self.likeImage afterDelay:1.0];
+    
+    self.doubleTapLike = YES;
+    [self didTapLike: nil];
+
+}
+- (IBAction)didTapLike:(id)sender {
+    PFUser *currUser = [PFUser currentUser];
+    NSMutableArray *likedUsers = [self.post objectForKey:@"likedUsers"];
+    if (!likedUsers) {
+        likedUsers = [[NSMutableArray alloc] init];
+    }
+    if ([likedUsers containsObject:currUser.username]) {
+        if (!self.doubleTapLike) {
+            [likedUsers removeObject:currUser.username];
+            self.likeCount.text = [self incrLikeCount: -1];
+            [self.post setObject:likedUsers forKey:@"likedUsers"];
+            [self.likeButton setImage: [UIImage imageNamed:@"likeButton"] forState:UIControlStateNormal];
+        }
+        self.doubleTapLike = NO;
+    } else {
+        /*NSNumber *prevCount = [self.post objectForKey:@"likeCount"];
+         NSNumber *newCount = [self increaseCount:prevCount by:1];
+         [self.post setObject:newCount forKey:@"likeCount"];*/
+        [likedUsers addObject:currUser.username];
+        self.likeCount.text = [self incrLikeCount: 1];
+        [self.post setObject:likedUsers forKey:@"likedUsers"];
+        [self.likeButton setImage: [UIImage imageNamed:@"redLikeButton"] forState:UIControlStateNormal];
+    }
+    [self.post saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (!error) {
+            
+        }
+    }];
+}
+
+- (void) fadeOut {
+    [UIView animateWithDuration:1 animations:^{
         self.likeImage.alpha = 0.0;
     }];
 }
@@ -95,10 +142,19 @@ static NSString * formatDate(NSDate *createdAtOriginalString) {
     //[self performSegueWithIdentifier:@"homeFeedSegue" sender:nil];
 }
 
-- (NSString *) makeLikeCount {
+- (NSString *) incrLikeCount: (int) incr {
+    self.likeCountNum += incr;
+    return [self makeString: self.likeCountNum];
+}
+
+- (long) makeLikeCount {
     //NSNumber *numLikes = [self.post objectForKey:@"likeCount"];
     NSArray *likedUsers = [self.post objectForKey:@"likedUsers"];
     long count = likedUsers.count;
+    return count;
+}
+
+- (NSString *) makeString: (long) count {
     NSString *numLikeString = [@(count) stringValue];
     NSString *likeString = [NSString stringWithFormat:@"%@ likes", numLikeString];
     return likeString;

@@ -81,6 +81,9 @@ static void setImageBar(UINavigationItem *navigationItem) {
     [self.refreshControl addTarget:self action:@selector(fetchPosts) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview: self.refreshControl];
 }
+- (void) viewDidAppear:(BOOL)animated {
+    [self.tableView reloadData];
+}
 /*
 - (void) instantiateGesureRecognizer {
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doSingleTap)];

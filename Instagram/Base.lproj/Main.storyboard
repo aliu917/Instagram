@@ -229,35 +229,48 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ASC-KL-iD4">
-                                <rect key="frame" x="20" y="503" width="150" height="45"/>
+                                <rect key="frame" x="20" y="539" width="150" height="45"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QiF-f5-Rum">
-                                <rect key="frame" x="216" y="515" width="178" height="21"/>
+                                <rect key="frame" x="216" y="551" width="178" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Caption" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Snf-nQ-T21">
-                                <rect key="frame" x="20" y="556" width="368" height="21"/>
+                                <rect key="frame" x="20" y="592" width="368" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="likeCount" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oH5-LN-oSZ">
-                                <rect key="frame" x="20" y="484" width="72" height="21"/>
+                                <rect key="frame" x="20" y="525" width="72" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.0" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="white-heart" translatesAutoresizingMaskIntoConstraints="NO" id="NYF-HZ-kaJ">
-                                <rect key="frame" x="128" y="214" width="158" height="126"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rt0-3x-Yw2">
+                                <rect key="frame" x="20" y="482" width="35" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="likeButton"/>
+                                <connections>
+                                    <action selector="didTapLike:" destination="8xC-1E-5XK" eventType="touchUpInside" id="D19-FS-UJs"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lhc-GV-Pse">
+                                <rect key="frame" x="77" y="469" width="60" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="commentButton"/>
+                            </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.0" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="heartfinal" translatesAutoresizingMaskIntoConstraints="NO" id="NYF-HZ-kaJ">
+                                <rect key="frame" x="132" y="202" width="150" height="150"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                         </subviews>
@@ -266,7 +279,9 @@
                     </view>
                     <connections>
                         <outlet property="caption" destination="Snf-nQ-T21" id="6tU-Dq-v06"/>
+                        <outlet property="commentButton" destination="Lhc-GV-Pse" id="eew-Ev-WyZ"/>
                         <outlet property="dateLabel" destination="QiF-f5-Rum" id="w1s-jy-Mhe"/>
+                        <outlet property="likeButton" destination="rt0-3x-Yw2" id="x9a-Os-1Lk"/>
                         <outlet property="likeCount" destination="oH5-LN-oSZ" id="wtz-aR-4ov"/>
                         <outlet property="likeImage" destination="NYF-HZ-kaJ" id="Coi-H7-buT"/>
                         <outlet property="postImage" destination="AZD-9q-KLJ" id="d9l-BJ-tnj"/>
@@ -324,17 +339,17 @@
                                                     </constraints>
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wYz-J7-Dt9">
-                                                    <rect key="frame" x="28" y="484" width="30" height="30"/>
+                                                    <rect key="frame" x="20" y="482" width="35" height="35"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" image="favor-icon-1"/>
+                                                    <state key="normal" image="likeButton"/>
                                                     <connections>
                                                         <action selector="didTapLike:" destination="IBr-Mn-Ghw" eventType="touchUpInside" id="UKr-DJ-THV"/>
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dkc-Ql-NQo">
-                                                    <rect key="frame" x="100" y="484" width="30" height="30"/>
+                                                    <rect key="frame" x="71" y="469" width="60" height="60"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" image="reply-icon"/>
+                                                    <state key="normal" image="commentButton"/>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I6O-ok-e2o">
                                                     <rect key="frame" x="312" y="489" width="82" height="21"/>
@@ -344,12 +359,16 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Comment" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BH7-Ke-FqV">
-                                                    <rect key="frame" x="20" y="522" width="374" height="21"/>
+                                                    <rect key="frame" x="20" y="537" width="374" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.0" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="heartfinal" translatesAutoresizingMaskIntoConstraints="NO" id="5sR-uQ-zIX">
+                                                    <rect key="frame" x="132" y="183" width="150" height="150"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="7jj-5v-pef" firstAttribute="top" secondItem="3eF-zm-f7R" secondAttribute="bottom" constant="0.5" id="6ns-nE-me0"/>
@@ -369,10 +388,10 @@
                                             <outlet property="commentButton" destination="Dkc-Ql-NQo" id="6QJ-kE-BGu"/>
                                             <outlet property="dateLabel" destination="I6O-ok-e2o" id="QXD-VY-WYb"/>
                                             <outlet property="likeButton" destination="wYz-J7-Dt9" id="FMX-1h-E21"/>
+                                            <outlet property="likeImage" destination="5sR-uQ-zIX" id="bOZ-Uh-kWc"/>
                                             <outlet property="postImage" destination="7jj-5v-pef" id="gg0-ah-iNE"/>
                                             <outlet property="profilePicture" destination="Kwr-SC-YRM" id="Y22-89-XC4"/>
                                             <outlet property="username" destination="LiK-fW-rvZ" id="J0y-Re-4KT"/>
-                                            <segue destination="8xC-1E-5XK" kind="show" id="G1b-CY-oka"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -639,17 +658,16 @@
     </scenes>
     <resources>
         <image name="blue-circle" width="512" height="512"/>
-        <image name="favor-icon-1" width="30" height="30"/>
+        <image name="commentButton" width="200" height="200"/>
         <image name="feed_tab" width="25" height="25"/>
+        <image name="heartfinal" width="800" height="600"/>
         <image name="insta_camera_btn" width="25" height="25"/>
         <image name="instagramLetters" width="680" height="340"/>
+        <image name="likeButton" width="280" height="254"/>
         <image name="profile-icon" width="26" height="26"/>
         <image name="profile_tab" width="25" height="25"/>
-        <image name="reply-icon" width="30" height="30"/>
-        <image name="white-heart" width="224" height="225"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="w8b-TB-USK"/>
-        <segue reference="G1b-CY-oka"/>
     </inferredMetricsTieBreakers>
 </document>

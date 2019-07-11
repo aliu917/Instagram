@@ -31,7 +31,16 @@ NSString * formatDate(NSDate *createdAtOriginalString) {
         return [formatter stringFromDate:createdAtOriginalString];
     }
 }
+/*
+void instantiateGestureRecognizer(UIImageView *postImage) {
+    
+    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doDoubleTap)];
+    doubleTap.numberOfTapsRequired = (NSInteger) 2;
+    [self.postImage addGestureRecognizer:doubleTap];
+    [self.postImage setUserInteractionEnabled:YES];
+}
 
+*/
 @implementation InstagramHelper
 /*
 NSString * formatDate(NSDate *createdAtOriginalString) {
@@ -58,4 +67,18 @@ NSString * formatDate(NSDate *createdAtOriginalString) {
     }
 }
 */
+/*
+-(void) instantiateGestureRecognizer: (UIImageView *)postImage {
+    
+    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doDoubleTap)];
+    doubleTap.numberOfTapsRequired = (NSInteger) 2;
+    [self.postImage addGestureRecognizer:doubleTap];
+    [self.postImage setUserInteractionEnabled:YES];
+    //[doubleTap release];
+}*/
+/*
+-(void) changeLikeButton:(UIButton *) likeButton onlyLike: (BOOL) onlyLike {
+    
+}*/
+
 @end

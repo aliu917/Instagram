@@ -9,8 +9,6 @@
 #import "PostCell.h"
 #import "Post.h"
 
-@implementation PostCell
-
 static NSString * formatDate(NSDate *createdAtOriginalString) {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     //[formatter setFormatterBehavior:NSDateFormatterBehavior10_4];
@@ -35,6 +33,8 @@ static NSString * formatDate(NSDate *createdAtOriginalString) {
     }
 }
 
+@implementation PostCell
+
 #pragma mark - PostCell lifecycle
 
 - (void)awakeFromNib {
@@ -56,13 +56,16 @@ static NSString * formatDate(NSDate *createdAtOriginalString) {
     _post = post;
     self.username.text = post.author.username;
     if (post.author.username && post.caption) {
-        self.comment.text = [post.author.username stringByAppendingString: post.caption];
+        NSMutableAttributedString *attrString = [self makeString:post.author.username withAppend: post.caption];
+        [self.comment setAttributedText: attrString];
+
     } else {
         self.comment.text = post.caption;
     }
     self.dateLabel.text = formatDate(self.post.createdAt);
     [self makePostImage: post.image];
-    
+    [self instantiateGestureRecognizer];
+
     
     //Fix later
     
@@ -79,10 +82,14 @@ static NSString * formatDate(NSDate *createdAtOriginalString) {
     }
     
     
+    self.profilePicture.layer.cornerRadius = self.profilePicture.frame.size.width / 2;
+    self.profilePicture.clipsToBounds = YES;
+    
+    
     PFUser *currUser = [PFUser currentUser];
     NSMutableArray *likedUsers = [self.post objectForKey:@"likedUsers"];
     if ([likedUsers containsObject:currUser.username]) {
-        [self.likeButton setImage: [UIImage imageNamed:@"favor-icon-red"] forState:UIControlStateNormal];
+        [self.likeButton setImage: [UIImage imageNamed:@"redLikButton"] forState:UIControlStateNormal];
     }
     
     
@@ -90,31 +97,47 @@ static NSString * formatDate(NSDate *createdAtOriginalString) {
     //self.postImage.image = post.image;
 }
 
+- (NSMutableAttributedString *) makeString: (NSString *) username withAppend: (NSString *) caption {
+    NSString *frontAddSpace = [username stringByAppendingString:@" "];
+    NSString *fullText = [frontAddSpace stringByAppendingString:caption];
+    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:fullText];
+    NSRange boldRange = [fullText rangeOfString:username];
+    [attrString addAttribute: NSFontAttributeName value:[UIFont boldSystemFontOfSize:18] range:boldRange];
+    return attrString;
+}
+
+
+- (void) instantiateGestureRecognizer {
+    
+    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doDoubleTap)];
+    doubleTap.numberOfTapsRequired = (NSInteger) 2;
+    [self.postImage addGestureRecognizer:doubleTap];
+    [self.postImage setUserInteractionEnabled:YES];
+
+}
+
+- (void) doDoubleTap {
+    self.likeImage.layer.cornerRadius = self.likeImage.frame.size.width / 2;
+    self.likeImage.clipsToBounds = YES;
+    [UIView animateWithDuration:1 animations:^{
+        self.likeImage.alpha = 0.75;
+    }];
+    [self performSelector:@selector(fadeOut) withObject:self.likeImage afterDelay:1.0];
+    self.doubleTapLike = YES;
+    [self didTapLike: nil];
+    
+}
+
+- (void) fadeOut {
+    [UIView animateWithDuration:1 animations:^{
+        self.likeImage.alpha = 0.0;
+    }];
+}
+
 - (void) didTapUserProfile:(UITapGestureRecognizer *)sender{
     [self.delegate postCell:self didTap:self.post.author];
 }
 
-
-
-/*
-- (void) instantiateGesureRecognizer {
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doSingleTap)];
-    singleTap.numberOfTapsRequired = 1;
-    [self.view addGestureRecognizer:singleTap];
-    
-    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doDoubleTap)];
-    doubleTap.numberOfTapsRequired = 2;
-    [self.view addGestureRecognizer:doubleTap];
-    
-}
-*/
-- (void) doDoubleTap {
-    
-}
-
--(void) doSingleTap {
-    //[self performSegueWithIdentifier:@"homeFeedSegue" sender:nil];
-}
 
 - (IBAction)didTapLike:(id)sender {
     PFUser *currUser = [PFUser currentUser];
@@ -123,20 +146,19 @@ static NSString * formatDate(NSDate *createdAtOriginalString) {
         likedUsers = [[NSMutableArray alloc] init];
     }
     if ([likedUsers containsObject:currUser.username]) {
-        /*NSNumber
-        *prevCount = [self.post objectForKey:@"likeCount"];
-        NSNumber *newCount = [self increaseCount:prevCount by:-1];
-        [self.post setObject:newCount forKey:@"likeCount"];*/
-        [likedUsers removeObject:currUser.username];
-        [self.post setObject:likedUsers forKey:@"likedUsers"];
-        [self.likeButton setImage: [UIImage imageNamed:@"favor-icon-1"] forState:UIControlStateNormal];
+        if (!self.doubleTapLike) {
+            [likedUsers removeObject:currUser.username];
+            [self.post setObject:likedUsers forKey:@"likedUsers"];
+            [self.likeButton setImage: [UIImage imageNamed:@"likeButton"] forState:UIControlStateNormal];
+        }
+        self.doubleTapLike = NO;
     } else {
         /*NSNumber *prevCount = [self.post objectForKey:@"likeCount"];
         NSNumber *newCount = [self increaseCount:prevCount by:1];
         [self.post setObject:newCount forKey:@"likeCount"];*/
         [likedUsers addObject:currUser.username];
         [self.post setObject:likedUsers forKey:@"likedUsers"];
-        [self.likeButton setImage: [UIImage imageNamed:@"favor-icon-red"] forState:UIControlStateNormal];
+        [self.likeButton setImage: [UIImage imageNamed:@"redLikeButton"] forState:UIControlStateNormal];
     }
     [self.post saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (!error) {
