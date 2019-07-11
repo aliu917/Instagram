@@ -42,6 +42,13 @@ static NSString * formatDate(NSDate *createdAtOriginalString) {
     UITapGestureRecognizer *profileTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTapUserProfile:)];
     [self.profilePicture addGestureRecognizer:profileTapGestureRecognizer];
     [self.profilePicture setUserInteractionEnabled:YES];
+    /*
+    PFUser *currUser = [PFUser currentUser];
+    NSMutableArray *likedUsers = [self.post objectForKey:@"likedUsers"];
+    if ([likedUsers containsObject:currUser.username]) {
+        [self.likeButton setImage: [UIImage imageNamed:@"favor-icon-red"] forState:UIControlStateNormal];
+    }*/
+
 }
 
 - (void) setPost: (Post *) post {
@@ -69,6 +76,13 @@ static NSString * formatDate(NSDate *createdAtOriginalString) {
             }
             self.profilePicture.image = [UIImage imageWithData:data];
         }];
+    }
+    
+    
+    PFUser *currUser = [PFUser currentUser];
+    NSMutableArray *likedUsers = [self.post objectForKey:@"likedUsers"];
+    if ([likedUsers containsObject:currUser.username]) {
+        [self.likeButton setImage: [UIImage imageNamed:@"favor-icon-red"] forState:UIControlStateNormal];
     }
     
     
@@ -104,28 +118,23 @@ static NSString * formatDate(NSDate *createdAtOriginalString) {
 
 - (IBAction)didTapLike:(id)sender {
     PFUser *currUser = [PFUser currentUser];
-    if (self.favorited) {
-        self.favorited = false;
-        self.favoriteCount -= 1;
+    NSMutableArray *likedUsers = [self.post objectForKey:@"likedUsers"];
+    if (!likedUsers) {
+        likedUsers = [[NSMutableArray alloc] init];
+    }
+    if ([likedUsers containsObject:currUser.username]) {
         /*NSNumber
         *prevCount = [self.post objectForKey:@"likeCount"];
         NSNumber *newCount = [self increaseCount:prevCount by:-1];
         [self.post setObject:newCount forKey:@"likeCount"];*/
-        NSMutableArray *likedUsers = [self.post objectForKey:@"likedUsers"];
-        [likedUsers removeObject:currUser];
+        [likedUsers removeObject:currUser.username];
         [self.post setObject:likedUsers forKey:@"likedUsers"];
         [self.likeButton setImage: [UIImage imageNamed:@"favor-icon-1"] forState:UIControlStateNormal];
     } else {
-        self.favorited = true;
-        self.favoriteCount += 1;
         /*NSNumber *prevCount = [self.post objectForKey:@"likeCount"];
         NSNumber *newCount = [self increaseCount:prevCount by:1];
         [self.post setObject:newCount forKey:@"likeCount"];*/
-        NSMutableArray *likedUsers = [self.post objectForKey:@"likedUsers"];
-        if (!likedUsers) {
-            likedUsers = [[NSMutableArray alloc] init];
-        }
-        [likedUsers addObject:currUser];
+        [likedUsers addObject:currUser.username];
         [self.post setObject:likedUsers forKey:@"likedUsers"];
         [self.likeButton setImage: [UIImage imageNamed:@"favor-icon-red"] forState:UIControlStateNormal];
     }
