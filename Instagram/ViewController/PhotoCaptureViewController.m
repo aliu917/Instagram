@@ -8,6 +8,7 @@
 
 #import "PhotoCaptureViewController.h"
 #import "Post.h"
+#import "InstagramHelper.h"
 
 @interface PhotoCaptureViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
@@ -29,28 +30,18 @@ static UIImage * resizeImage(UIImage *image, CGSize size) {
     return newImage;
 }
 
+
 @implementation PhotoCaptureViewController
 
-#pragma mark - PhotoCaptureViewController
+#pragma mark - PhotoCaptureViewController lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    //self.user.userPosts = [[NSMutableArray alloc] init];
 }
 
 - (IBAction)getPicture:(id)sender {
-    UIImagePickerController *imagePickerVC = [UIImagePickerController new];
-    imagePickerVC.delegate = self;
-    imagePickerVC.allowsEditing = YES;
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        imagePickerVC.sourceType = UIImagePickerControllerSourceTypeCamera;
-    } else {
-        NSLog(@"Camera 🚫 available so we will use photo library instead");
-        imagePickerVC.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    }
-    [self presentViewController:imagePickerVC animated:YES completion:nil];
+    [InstagramHelper makeImagePicker: self];
 }
-
 
 #pragma mark - UIImagePickerController delegate
 
@@ -102,5 +93,20 @@ static UIImage * resizeImage(UIImage *image, CGSize size) {
     // Pass the selected object to the new view controller.
 }
 */
+
+/*
+ - (void) makeImagePicker: (UIViewController *) vc {
+ UIImagePickerController *imagePickerVC = [UIImagePickerController new];
+ imagePickerVC.delegate = vc;
+ imagePickerVC.allowsEditing = YES;
+ if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+ imagePickerVC.sourceType = UIImagePickerControllerSourceTypeCamera;
+ } else {
+ NSLog(@"Camera 🚫 available so we will use photo library instead");
+ imagePickerVC.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+ }
+ [vc presentViewController:imagePickerVC animated:YES completion:nil];
+ }
+ */
 
 @end

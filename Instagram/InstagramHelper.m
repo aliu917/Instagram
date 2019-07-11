@@ -74,8 +74,8 @@ void instantiateGestureRecognizer(UIImageView *postImage) {
 
 #pragma mark - Image setting helper functions
 
-+(void) makeProfileImage: (UIImageView *) profilePicture withPost: (Post *) post {
-    PFFileObject *image = [post.author objectForKey:@"image"];
++(void) makeProfileImage: (UIImageView *) profilePicture withUser: (PFUser *) user {
+    PFFileObject *image = [user objectForKey:@"image"];
     
     //FIX LATER
     if (image) {
@@ -109,7 +109,8 @@ void instantiateGestureRecognizer(UIImageView *postImage) {
     }
 }
 
-+(void) doLikeAction: (UIButton *) likeButton forPost: (Post *) post allowUnlike: (BOOL) allow{
++(int) doLikeAction: (UIButton *) likeButton forPost: (Post *) post allowUnlike: (BOOL) allow {
+    int incrChange = 0;
     PFUser *currUser = [PFUser currentUser];
     NSMutableArray *likedUsers = [post objectForKey:@"likedUsers"];
     if (!likedUsers) {
@@ -118,10 +119,12 @@ void instantiateGestureRecognizer(UIImageView *postImage) {
     if ([likedUsers containsObject:currUser.username]) {
         if (allow) {
             [likedUsers removeObject:currUser.username];
+            incrChange = -1;
             [likeButton setImage: [UIImage imageNamed:@"likeButton"] forState:UIControlStateNormal];
         }
     } else {
         [likedUsers addObject:currUser.username];
+        incrChange = 1;
         [likeButton setImage: [UIImage imageNamed:@"redLikeButton"] forState:UIControlStateNormal];
     }
     [post setObject:likedUsers forKey:@"likedUsers"];
@@ -130,6 +133,20 @@ void instantiateGestureRecognizer(UIImageView *postImage) {
             
         }
     }];
+    return incrChange;
+}
+
++ (void) makeImagePicker: (UIViewController *) vc {
+    UIImagePickerController *imagePickerVC = [UIImagePickerController new];
+    imagePickerVC.delegate = vc;
+    imagePickerVC.allowsEditing = YES;
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        imagePickerVC.sourceType = UIImagePickerControllerSourceTypeCamera;
+    } else {
+        NSLog(@"Camera 🚫 available so we will use photo library instead");
+        imagePickerVC.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    }
+    [vc presentViewController:imagePickerVC animated:YES completion:nil];
 }
 
 /*

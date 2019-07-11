@@ -11,8 +11,9 @@
 #import "Post.h"
 #import "UserPostCollectionCell.h"
 #import "PostDetailsViewController.h"
+#import "InstagramHelper.h"
 
-@interface ProfileViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
+@interface ProfileViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *profilePhoto;
 @property (weak, nonatomic) IBOutlet UILabel *username;
@@ -24,80 +25,46 @@
 
 @end
 
+static void saveImageForUser(UIImage *editedImage, PFUser *user) {
+    NSData *imageData = UIImageJPEGRepresentation(editedImage, 1);
+    PFFileObject *imageFile = [PFFileObject fileObjectWithName:@"image.png" data: imageData];
+    [imageFile saveInBackground];
+    [user setObject:imageFile forKey:@"image"];
+    [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (!error) {
+            
+        }
+    }];
+}
+
 @implementation ProfileViewController
+
+#pragma mark - ProfileViewController lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     if (!self.user) {
         self.user = [PFUser currentUser];
     }
+    self.collectionView.dataSource = self;
+    self.collectionView.delegate = self;
     self.postCount.text = [@(0) stringValue];
     self.followerCount.text = [@(0) stringValue];
     self.followingCount.text = [@(0) stringValue];
-    
-    
-    PFFileObject *image = [self.user objectForKey:@"image"];
-    
-    //FIX LATER
-    [image getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
-        if (!data) {
-            return NSLog(@"%@", error);
-        }
-        self.profilePhoto.image = [UIImage imageWithData:data];
-    }];
-
-    
-    
-    
-    
-    
-    
+    [InstagramHelper makeProfileImage: self.profilePhoto withUser: self.user];
     self.username.text = self.user.username;
-    self.collectionView.dataSource = self;
-    self.collectionView.delegate = self;
     [self formatLayout];
     [self fetchUserPosts];
 }
 
+#pragma mark - edit profile image
+
 - (IBAction)changeProfilePicture:(id)sender {
-    UIImagePickerController *imagePickerVC = [UIImagePickerController new];
-    imagePickerVC.delegate = self;
-    imagePickerVC.allowsEditing = YES;
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        imagePickerVC.sourceType = UIImagePickerControllerSourceTypeCamera;
-    } else {
-        NSLog(@"Camera 🚫 available so we will use photo library instead");
-        imagePickerVC.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    }
-    [self presentViewController:imagePickerVC animated:YES completion:nil];
+    [InstagramHelper makeImagePicker: self];
+
 }
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
-    UIImage *originalImage = info[UIImagePickerControllerOriginalImage];
-    UIImage *editedImage = info[UIImagePickerControllerEditedImage];
-    self.profilePhoto.image = editedImage;
-    NSData *imageData = UIImageJPEGRepresentation(editedImage, 1);
-    PFFileObject *imageFile = [PFFileObject fileObjectWithName:@"image.png" data: imageData];
-    [imageFile saveInBackground];
-    [self.user setObject:imageFile forKey:@"image"];
-    [self.user saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-        if (!error) {
-            
-        }
-    }];
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    UserPostCollectionCell *tappedCell = sender;
-    PostDetailsViewController *postDetailsViewController = [segue destinationViewController];
-    postDetailsViewController.post = tappedCell.post;
-}
-
+#pragma mark - CollectionViewCell delegate & data source
 
 - (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
     UserPostCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"UserPostCollectionCell" forIndexPath:indexPath];
@@ -108,6 +75,39 @@
 - (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return self.posts.count;
 }
+
+#pragma mark - UIImagePickerController delegate
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
+    UIImage *originalImage = info[UIImagePickerControllerOriginalImage];
+    UIImage *editedImage = info[UIImagePickerControllerEditedImage];
+    self.profilePhoto.image = editedImage;
+    saveImageForUser(editedImage, self.user);
+    /*NSData *imageData = UIImageJPEGRepresentation(editedImage, 1);
+    PFFileObject *imageFile = [PFFileObject fileObjectWithName:@"image.png" data: imageData];
+    [imageFile saveInBackground];
+    [self.user setObject:imageFile forKey:@"image"];
+    [self.user saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (!error) {
+            
+        }
+    }];*/
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+/*
+- (void) saveImage: (UIImage *) editedImage ForUser: (PFUser *) user {
+    NSData *imageData = UIImageJPEGRepresentation(editedImage, 1);
+    PFFileObject *imageFile = [PFFileObject fileObjectWithName:@"image.png" data: imageData];
+    [imageFile saveInBackground];
+    [user setObject:imageFile forKey:@"image"];
+    [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (!error) {
+            
+        }
+    }];
+}*/
+
+#pragma marl - ProfileViewController helper functions
 
 -(void) formatLayout {
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *) self.collectionView.collectionViewLayout;
@@ -125,12 +125,8 @@
     [postQuery orderByDescending:@"createdAt"];
     [postQuery includeKey:@"author"];
     [postQuery whereKey:@"author" equalTo:self.user];
-    //postQuery.limit = 20;
-    //[MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [postQuery findObjectsInBackgroundWithBlock:^(NSArray<Post *> * _Nullable posts, NSError * _Nullable error) {
         if (posts) {
-            //self.isMoreDataLoading = false;
-            //[self.posts addObjectsFromArray:posts];
             self.posts = posts;
             [self.collectionView reloadData];
             
@@ -139,9 +135,16 @@
         else {
             NSLog(@"%@", error.localizedDescription);
         }
-        //[self.refreshControl endRefreshing];
-        //[MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
+}
+
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    UserPostCollectionCell *tappedCell = sender;
+    PostDetailsViewController *postDetailsViewController = [segue destinationViewController];
+    postDetailsViewController.post = tappedCell.post;
 }
 
 @end

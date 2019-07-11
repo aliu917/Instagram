@@ -8,16 +8,19 @@
 
 #import "UserPostCollectionCell.h"
 #import "Post.h"
+#import "InstagramHelper.h"
 
 @implementation UserPostCollectionCell
+
+#pragma mark - UserPostCollectionCell lifecycle
 
 - (void) setImage: (Post *) post {
     NSLog(@"setPost called");
     _post = post;
-    [self makePostImage: post.image];
-    //self.postImage.image = post.image;
-}
+    [InstagramHelper makePost: self.postImage forImage: post.image];
 
+}
+/*
 -(void) makePostImage: (PFFileObject *) postFile {
     [postFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
         if (!data) {
@@ -25,6 +28,6 @@
         }
         self.postImage.image = [UIImage imageWithData:data];
     }];
-}
+}*/
 
 @end

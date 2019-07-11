@@ -36,7 +36,7 @@ static void makeCommentwithPost(UILabel *comment, Post *post) {
     [InstagramHelper makeComment:self.comment withPost: post];
     self.dateLabel.text = [InstagramHelper formatDate:self.post.createdAt];
     [InstagramHelper makePost: self.postImage forImage: post.image];
-    [InstagramHelper makeProfileImage: self.profilePicture withPost: post];
+    [InstagramHelper makeProfileImage: self.profilePicture withUser: post.author];
     [InstagramHelper initialButtonSetting: self.likeButton forPost: self.post];
 }
 

@@ -17,12 +17,13 @@ NS_ASSUME_NONNULL_BEGIN
 //NSString * formatDate(NSDate *createdAtOriginalString);
 + (NSString *) formatDate: (NSDate *)createdAtOriginalString;
 + (void) setupGR: (UITapGestureRecognizer *) tgr onImage: (UIImageView *) imageView withTaps: (int) numTaps;
-+(void) makeProfileImage: (UIImageView *) profilePicture withPost: (Post *) post;
++(void) makeProfileImage: (UIImageView *) profilePicture withUser: (PFUser *) user;
 + (NSMutableAttributedString *) makeString: (NSString *) username withAppend: (NSString *) caption;
 +(void) makePost: (UIImageView *) postImage forImage: (PFFileObject *) postFile;
 +(void) initialButtonSetting: (UIButton *)likeButton forPost: (Post *)post;
 + (void) makeComment:(UILabel *)comment withPost:(Post *) post;
-+(void) doLikeAction: (UIButton *) likeButton forPost: (Post *) post allowUnlike: (BOOL) allow;
++(int) doLikeAction: (UIButton *) likeButton forPost: (Post *) post allowUnlike: (BOOL) allow;
++ (void) makeImagePicker: (UIViewController *) vc;
 
 
 
