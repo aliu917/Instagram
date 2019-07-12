@@ -14,18 +14,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface InstagramHelper : NSObject
 
-//NSString * formatDate(NSDate *createdAtOriginalString);
-+ (NSString *) formatDate: (NSDate *)createdAtOriginalString;
-+ (void) setupGR: (UITapGestureRecognizer *) tgr onImage: (UIImageView *) imageView withTaps: (int) numTaps;
-+(void) makeProfileImage: (UIImageView *) profilePicture withUser: (PFUser *) user;
-+ (NSMutableAttributedString *) makeString: (NSString *) username withAppend: (NSString *) caption;
-+(void) makePost: (UIImageView *) postImage forImage: (PFFileObject *) postFile;
-+(void) initialButtonSetting: (UIButton *)likeButton forPost: (Post *)post;
-+ (void) makeComment:(UILabel *)comment withPost:(Post *) post;
-+(int) doLikeAction: (UIButton *) likeButton forPost: (Post *) post allowUnlike: (BOOL) allow;
-+ (void) makeImagePicker: (UIViewController *) vc;
-
-
+NSString * formatDate(NSDate *createdAtOriginalString);
+NSMutableAttributedString* makeStringwithAppend(NSString *username, NSString *caption);
+void makeCommentwithPost(UILabel *comment, Post *post);
+void setupGRonImagewithTaps(UITapGestureRecognizer *tgr, UIImageView *imageView, int numTaps);
+void makeProfileImagewithUser(UIImageView *profilePicture, PFUser *user);
+void makePostforImage(UIImageView *postImage, PFFileObject *postFile);
+void initialButtonSettingforPost(UIButton *likeButton, Post *post);
+int doLikeActionforPostallowUnlike(UIButton *likeButton, Post *post, BOOL allow);
+void makeImagePicker(UIViewController *vc);
 
 @end
 

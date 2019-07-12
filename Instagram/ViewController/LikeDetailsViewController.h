@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LikeDetailsViewController : UIViewController
 
 @property (strong, nonatomic) NSArray *array;
+@property (strong, nonatomic) NSString *units;
 
 @end
 

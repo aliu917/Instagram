@@ -25,34 +25,6 @@
 @property (assign, nonatomic) BOOL isMoreDataLoading;
 @end
 
-#pragma mark - C helper functions
-
-/*
-
-static void fetchPostsWithFilter(NSDate *lastDate) {
-    PFQuery *postQuery = [Post query];
-    [postQuery orderByDescending:@"createdAt"];
-    [postQuery includeKey:@"author"];
-    if (lastDate) {
-        [postQuery whereKey:@"createdAt" lessThan:lastDate];
-    }
-    postQuery.limit = 20;
-    [MBProgressHUD showHUDAddedTo:refToSelf.view animated:YES];
-    [postQuery findObjectsInBackgroundWithBlock:^(NSArray<Post *> * _Nullable posts, NSError * _Nullable error) {
-        if (posts) {
-            refToSelf.isMoreDataLoading = false;
-            [refToSelf.posts addObjectsFromArray:posts];
-            [refToSelf.tableView reloadData];
-        }
-        else {
-            NSLog(@"%@", error.localizedDescription);
-        }
-        [refToSelf.refreshControl endRefreshing];
-        [MBProgressHUD hideHUDForView:refToSelf.view animated:YES];
-    }];
-}
- */
-
 static void setImageBar(UINavigationItem *navigationItem) {
     UIImage *img = [UIImage imageNamed:@"instagramLetters.png"];
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
@@ -73,10 +45,6 @@ static void setImageBar(UINavigationItem *navigationItem) {
     setImageBar(self.navigationItem);
     [self fetchPosts];
     [self initiateRefreshControl];
-}
-
-- (void) viewDidAppear:(BOOL)animated {
-    [self.tableView reloadData];
 }
 
 #pragma mark - UITableView delegate & data source
@@ -135,7 +103,6 @@ static void setImageBar(UINavigationItem *navigationItem) {
     [self fetchPostsWithFilter: nil];
 }
 
-
 - (void) fetchPostsWithFilter: (NSDate *) lastDate {
     PFQuery *postQuery = [Post query];
     [postQuery orderByDescending:@"createdAt"];
@@ -162,7 +129,6 @@ static void setImageBar(UINavigationItem *navigationItem) {
     }];
 }
 
-
 -(void) initiateRefreshControl {
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(fetchPosts) forControlEvents:UIControlEventValueChanged];
@@ -184,37 +150,5 @@ static void setImageBar(UINavigationItem *navigationItem) {
 
     }
 }
-
-/*
- - (void) setImageBar {
- UIImage *img = [UIImage imageNamed:@"instagramLetters.png"];
- UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
- [imgView setImage:img];
- // setContent mode aspect fit
- [imgView setContentMode:UIViewContentModeScaleAspectFit];
- self.navigationItem.titleView = imgView;
- }*/
-/*
- - (UIImage *)resizeImage:(UIImage *)image withSize:(CGSize)size {
- UIImageView *resizeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
- 
- resizeImageView.contentMode = UIViewContentModeScaleAspectFill;
- resizeImageView.image = image;
- 
- UIGraphicsBeginImageContext(size);
- [resizeImageView.layer renderInContext:UIGraphicsGetCurrentContext()];
- UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
- UIGraphicsEndImageContext();
- 
- return newImage;
- }
- */
-/*
- -(CGSize *) makeCGSize: (UIImage *) image {
- CGSize imageSize = CGSizeMake(image.size.width * image.scale, image.size.height * image.scale);
- CGFloat bytesPerPixel = 4.0;
- CGFloat bytesPerSize = imageSize.width * imageSize.height;
- }
- */
 
 @end

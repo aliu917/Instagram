@@ -15,7 +15,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *selectImageView;
 @property (weak, nonatomic) IBOutlet UITextView *caption;
 @property (strong, nonatomic) UIImage *postImage;
-//@property (strong, nonatomic) PFUser *user;
 
 @end
 
@@ -40,7 +39,7 @@ static UIImage * resizeImage(UIImage *image, CGSize size) {
 }
 
 - (IBAction)getPicture:(id)sender {
-    [InstagramHelper makeImagePicker: self];
+    makeImagePicker(self);
 }
 
 #pragma mark - UIImagePickerController delegate
@@ -58,55 +57,9 @@ static UIImage * resizeImage(UIImage *image, CGSize size) {
 - (IBAction)didTapPost:(id)sender {
     self.caption.delegate = self;
     [Post postUserImage: self.postImage withCaption: self.caption.text withCompletion: nil];
+    self.postImage = nil;
+    self.caption.text = @"Enter a caption...";
     [self.tabBarController setSelectedIndex: 0];
 }
-
-
-#pragma mark - PhotoCaptureViewController helper functions
-
-/*
-- (UIImage *)resizeImage:(UIImage *)image withSize:(CGSize)size {
-    UIImageView *resizeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
-    resizeImageView.contentMode = UIViewContentModeScaleAspectFill;
-    resizeImageView.image = image;
-    UIGraphicsBeginImageContext(size);
-    [resizeImageView.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return newImage;
-}
-*/
-/*
--(CGSize *) makeCGSize: (UIImage *) image {
-    CGSize imageSize = CGSizeMake(image.size.width * image.scale, image.size.height * image.scale);
-    CGFloat bytesPerPixel = 4.0;
-    CGFloat bytesPerSize = imageSize.width * imageSize.height;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
-/*
- - (void) makeImagePicker: (UIViewController *) vc {
- UIImagePickerController *imagePickerVC = [UIImagePickerController new];
- imagePickerVC.delegate = vc;
- imagePickerVC.allowsEditing = YES;
- if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
- imagePickerVC.sourceType = UIImagePickerControllerSourceTypeCamera;
- } else {
- NSLog(@"Camera 🚫 available so we will use photo library instead");
- imagePickerVC.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
- }
- [vc presentViewController:imagePickerVC animated:YES completion:nil];
- }
- */
 
 @end

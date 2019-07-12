@@ -10,21 +10,9 @@
 #import <UIKit/UIKit.h>
 #import "Post.h"
 
-/*
-void instantiateGestureRecognizer(UIImageView *postImage) {
-    
-    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doDoubleTap)];
-    doubleTap.numberOfTapsRequired = (NSInteger) 2;
-    [self.postImage addGestureRecognizer:doubleTap];
-    [self.postImage setUserInteractionEnabled:YES];
-}
-
-*/
-@implementation InstagramHelper
-
 #pragma mark - String formatting helpers
 
-+ (NSString *) formatDate: (NSDate *)createdAtOriginalString {
+NSString * formatDate(NSDate *createdAtOriginalString) {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     NSDate *todayDate = [NSDate date];
     double ti = [createdAtOriginalString timeIntervalSinceDate:todayDate];
@@ -46,7 +34,7 @@ void instantiateGestureRecognizer(UIImageView *postImage) {
     }
 }
 
-+ (NSMutableAttributedString *) makeString: (NSString *) username withAppend: (NSString *) caption {
+NSMutableAttributedString* makeStringwithAppend(NSString *username, NSString *caption) {
     NSString *frontAddSpace = [username stringByAppendingString:@" "];
     NSString *fullText = [frontAddSpace stringByAppendingString:caption];
     NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:fullText];
@@ -55,9 +43,9 @@ void instantiateGestureRecognizer(UIImageView *postImage) {
     return attrString;
 }
 
-+ (void) makeComment:(UILabel *)comment withPost:(Post *) post {
+void makeCommentwithPost(UILabel *comment, Post *post) {
     if (post.author.username && post.caption) {
-        NSMutableAttributedString *attrString = [InstagramHelper makeString:post.author.username withAppend: post.caption];
+        NSMutableAttributedString *attrString = makeStringwithAppend(post.author.username, post.caption);
         [comment setAttributedText: attrString];
     } else {
         comment.text = post.caption;
@@ -66,7 +54,7 @@ void instantiateGestureRecognizer(UIImageView *postImage) {
 
 #pragma mark - Tap Gesture Recognizer helper
 
-+ (void) setupGR: (UITapGestureRecognizer *) tgr onImage: (UIImageView *) imageView withTaps: (int) numTaps {
+void setupGRonImagewithTaps(UITapGestureRecognizer *tgr, UIImageView *imageView, int numTaps) {
     tgr.numberOfTapsRequired = (NSInteger) numTaps;
     [imageView addGestureRecognizer:tgr];
     [imageView setUserInteractionEnabled:YES];
@@ -74,7 +62,7 @@ void instantiateGestureRecognizer(UIImageView *postImage) {
 
 #pragma mark - Image setting helper functions
 
-+(void) makeProfileImage: (UIImageView *) profilePicture withUser: (PFUser *) user {
+void makeProfileImagewithUser(UIImageView *profilePicture, PFUser *user) {
     PFFileObject *image = [user objectForKey:@"image"];
     
     //FIX LATER
@@ -85,12 +73,14 @@ void instantiateGestureRecognizer(UIImageView *postImage) {
             }
             profilePicture.image = [UIImage imageWithData:data];
         }];
+    } else {
+        profilePicture.image = [UIImage imageNamed:@"profile-icon"];
     }
     profilePicture.layer.cornerRadius = profilePicture.frame.size.width / 2;
     profilePicture.clipsToBounds = YES;
 }
 
-+(void) makePost: (UIImageView *) postImage forImage: (PFFileObject *) postFile {
+void makePostforImage(UIImageView *postImage, PFFileObject *postFile) {
     [postFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
         if (!data) {
             return NSLog(@"%@", error);
@@ -101,22 +91,20 @@ void instantiateGestureRecognizer(UIImageView *postImage) {
 
 #pragma mark - Button setting helper functions
 
-+(void) initialButtonSetting: (UIButton *)likeButton forPost: (Post *)post {
+void initialButtonSettingforPost(UIButton *likeButton, Post *post) {
     PFUser *currUser = [PFUser currentUser];
     NSMutableArray *likedUsers = [post objectForKey:@"likedUsers"];
-    //NSMutableDictionary *likedUsersDict = [post objectForKey:@"likedUsersDict"];
-    //NSDictionary *tempDict = likedUsersDict;
     if ([likedUsers containsObject:currUser.username]) {
-    //if ([likedUsersDict objectForKey:currUser.username]) {
         [likeButton setImage: [UIImage imageNamed:@"redLikeButton"] forState:UIControlStateNormal];
+    } else {
+        [likeButton setImage: [UIImage imageNamed:@"likeButton"] forState:UIControlStateNormal];
     }
 }
 
-+(int) doLikeAction: (UIButton *) likeButton forPost: (Post *) post allowUnlike: (BOOL) allow {
+int doLikeActionforPostallowUnlike(UIButton *likeButton, Post *post, BOOL allow) {
     int incrChange = 0;
     PFUser *currUser = [PFUser currentUser];
     NSMutableArray *likedUsers = [post objectForKey:@"likedUsers"];
-    //NSMutableDictionary *likedUsersDict = [post objectForKey:@"likedUsersDict"];
     if (!likedUsers) {
         likedUsers = [[NSMutableArray alloc] init];
     }
@@ -132,22 +120,6 @@ void instantiateGestureRecognizer(UIImageView *postImage) {
         [likeButton setImage: [UIImage imageNamed:@"redLikeButton"] forState:UIControlStateNormal];
     }
     [post setObject:likedUsers forKey:@"likedUsers"];
-    /*if (!likedUsersDict) {
-        likedUsersDict = [[NSMutableDictionary alloc] init];
-    }
-    if ([likedUsersDict objectForKey:currUser.username]) {
-        if (allow) {
-            [likedUsersDict removeObjectForKey:currUser.username];
-            incrChange = -1;
-            [likeButton setImage: [UIImage imageNamed:@"likeButton"] forState:UIControlStateNormal];
-        }
-    } else {
-        [likedUsersDict setObject: currUser forKey: currUser.username];
-        incrChange = 1;
-        [likeButton setImage: [UIImage imageNamed:@"redLikeButton"] forState:UIControlStateNormal];
-    }
-    [post setObject:likedUsersDict forKey:@"likedUsersDict"];
-    NSDictionary *temp = [post objectForKey:@"likedUsersDict"];*/
     [post saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (!error) {
             
@@ -156,7 +128,7 @@ void instantiateGestureRecognizer(UIImageView *postImage) {
     return incrChange;
 }
 
-+ (void) makeImagePicker: (UIViewController *) vc {
+void makeImagePicker(UIViewController *vc) {
     UIImagePickerController *imagePickerVC = [UIImagePickerController new];
     imagePickerVC.delegate = vc;
     imagePickerVC.allowsEditing = YES;
@@ -169,43 +141,6 @@ void instantiateGestureRecognizer(UIImageView *postImage) {
     [vc presentViewController:imagePickerVC animated:YES completion:nil];
 }
 
-/*
-NSString * formatDate(NSDate *createdAtOriginalString) {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    //[formatter setFormatterBehavior:NSDateFormatterBehavior10_4];
-    //[formatter setDateFormat:@"E MMM d HH:mm:ss Z y"];
-    NSDate *todayDate = [NSDate date];
-    double ti = [createdAtOriginalString timeIntervalSinceDate:todayDate];
-    ti = ti * -1;
-    if(ti < 1) {
-        return @"never";
-    } else  if (ti < 60) {
-        return [NSString stringWithFormat:@"%.00f sec ago", ti];
-    } else if (ti < 3600) {
-        int diff = round(ti / 60);
-        return [NSString stringWithFormat:@"%d min ago", diff];
-    } else if (ti < 86400) {
-        int diff = round(ti / 60 / 60);
-        return[NSString stringWithFormat:@"%d hrs ago", diff];
-    } else {
-        formatter.dateStyle = NSDateFormatterShortStyle;
-        formatter.timeStyle = NSDateFormatterNoStyle;
-        return [formatter stringFromDate:createdAtOriginalString];
-    }
-}
-*/
-/*
-void instantiateGestureRecognizer(UIImageView *postImage) {
-    
-    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doDoubleTap)];
-    doubleTap.numberOfTapsRequired = (NSInteger) 2;
-    [postImage addGestureRecognizer:doubleTap];
-    [postImage setUserInteractionEnabled:YES];
-    //[doubleTap release];
-}*/
-/*
--(void) changeLikeButton:(UIButton *) likeButton onlyLike: (BOOL) onlyLike {
-    
-}*/
+@implementation InstagramHelper
 
 @end

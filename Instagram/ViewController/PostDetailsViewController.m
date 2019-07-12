@@ -9,6 +9,7 @@
 #import "PostDetailsViewController.h"
 #import "InstagramHelper.h"
 #import "LikeDetailsViewController.h"
+#import "CommentViewController.h"
 
 @interface PostDetailsViewController () <UIGestureRecognizerDelegate>
 
@@ -26,6 +27,9 @@
 @end
 
 static NSString* makeString(long count, NSString *string) {
+    if (count == 1) {
+        string = [string substringToIndex:[string length]-1];
+    }
     NSString *numString = [@(count) stringValue];
     NSString *prevString = [NSString stringWithFormat:@"%@ ", numString];
     NSString *finalString = [prevString stringByAppendingString: string];
@@ -34,8 +38,6 @@ static NSString* makeString(long count, NSString *string) {
 
 static long makeLikeCount(Post *post) {
     NSArray *likedUsers = [post objectForKey:@"likedUsers"];
-    //NSDictionary *likedUsersDict = [post objectForKey:@"likedUsersDict"];
-    //long count = [likedUsersDict count];
     long count = likedUsers.count;
     return count;
 }
@@ -47,48 +49,40 @@ static long makeLikeCount(Post *post) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.dateLabel.text = [InstagramHelper formatDate: self.post.createdAt];
-    [InstagramHelper makeComment:self.caption withPost:self.post];
-    
-    
+    self.dateLabel.text = formatDate (self.post.createdAt);
+    makeCommentwithPost(self.caption, self.post);
     self.likeCountNum = makeLikeCount(self.post);
     NSString *likeCountText = makeString(self.likeCountNum, @"likes");
     [self.likeCount setTitle:likeCountText forState:UIControlStateNormal];
-    
     NSArray *comments = [self.post objectForKey:@"commentsArray"];
     long count = [comments count];
     NSString *commentText = makeString(count, @"comments");
     [self.commentCount setTitle:commentText forState:UIControlStateNormal];
-    
-    [InstagramHelper makePost: self.postImage forImage: self.post.image];
-    [self instantiateGestureRecognizer];
+    makePostforImage(self.postImage, self.post.image);
 }
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [InstagramHelper initialButtonSetting: self.likeButton forPost: self.post];
+    initialButtonSettingforPost(self.likeButton, self.post);
+    NSArray *comments = [self.post objectForKey:@"commentsArray"];
+    long count = [comments count];
+    NSString *commentText = makeString(count, @"comments");
+    [self.commentCount setTitle:commentText forState:UIControlStateNormal];
 }
 
 #pragma mark - Action: like posts
 
 - (IBAction)didTapLike:(id)sender {
-    int change = [InstagramHelper doLikeAction: self.likeButton forPost: self.post allowUnlike: YES];
-    //self.likeCount.text = [self incrLikeCount:change];
-    NSString *likeCountText = [self incrCount:change withUnit: @"like"];
+    int change = doLikeActionforPostallowUnlike(self.likeButton, self.post, sender != nil);
+    NSString *likeCountText = [self incrCount:change withUnit: @"likes"];
     [self.likeCount setTitle:likeCountText forState:UIControlStateNormal];
-}
-- (IBAction)didTapComment:(id)sender {
-    NSArray *comments = [self.post objectForKey:@"commentsArray"];
-    long count = [comments count];
-    NSString *commentText = makeString(count, @"comments");
-    [self.commentCount setTitle:commentText forState:UIControlStateNormal];
 }
 
 #pragma mark - Gesture Recognizer helper functions
 
 - (void) instantiateGestureRecognizer {
     UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doDoubleTap)];
-    [InstagramHelper setupGR: doubleTap onImage: self.postImage withTaps: 2];
+    setupGRonImagewithTaps(doubleTap, self.postImage, 2);
 }
 
 - (void) doDoubleTap {
@@ -112,71 +106,23 @@ static long makeLikeCount(Post *post) {
     self.likeCountNum += incr;
     return makeString(self.likeCountNum, string);
 }
-/*
-- (long) makeLikeCount: (Post *) post {
-    //NSNumber *numLikes = [self.post objectForKey:@"likeCount"];
-    NSArray *likedUsers = [post objectForKey:@"likedUsers"];
-    long count = likedUsers.count;
-    return count;
-}*/
-/*
-- (NSString *) makeString: (long) count {
-    NSString *numLikeString = [@(count) stringValue];
-    NSString *likeString = [NSString stringWithFormat:@"%@ likes", numLikeString];
-    return likeString;
-}
-*/
-#pragma mark - PostDetailsViewController helper function
-/*
--(NSString *) formatDate: (NSDate *) createdAtOriginalString {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    //[formatter setFormatterBehavior:NSDateFormatterBehavior10_4];
-    //[formatter setDateFormat:@"E MMM d HH:mm:ss Z y"];
-    NSDate *todayDate = [NSDate date];
-    double ti = [createdAtOriginalString timeIntervalSinceDate:todayDate];
-    ti = ti * -1;
-    if(ti < 1) {
-        return @"never";
-    } else  if (ti < 60) {
-        return [NSString stringWithFormat:@"%.00f sec ago", ti];
-    } else if (ti < 3600) {
-        int diff = round(ti / 60);
-        return [NSString stringWithFormat:@"%d min ago", diff];
-    } else if (ti < 86400) {
-        int diff = round(ti / 60 / 60);
-        return[NSString stringWithFormat:@"%d hrs ago", diff];
-    } else {
-        formatter.dateStyle = NSDateFormatterShortStyle;
-        formatter.timeStyle = NSDateFormatterNoStyle;
-        return [formatter stringFromDate:createdAtOriginalString];
-    }
-}*/
-/*
--(void) makePostImage: (PFFileObject *) postFile {
-    //UIImage *image = [[UIImage alloc] init];
-    [postFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
-        if (!data) {
-            return NSLog(@"%@", error);
-        }
-        self.postImage.image = [UIImage imageWithData:data];
-    }];
-}*/
-
-
 
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
     if ([segue.identifier isEqualToString:@"commentDetailsSegue"]) {
+        NSArray *array = [self.post objectForKey:@"commentsArray"];
         LikeDetailsViewController *likeDetailsViewController = [segue destinationViewController];
-        likeDetailsViewController.post = self.post;
+        likeDetailsViewController.array = array;
+        likeDetailsViewController.units = @"commented";
+    } else if ([segue.identifier isEqualToString:@"composeFromDetailsSegue"]) {
+        CommentViewController *commentViewController = [segue destinationViewController];
+        commentViewController.post = self.post;
     } else {
-        NSArray *array = [self.post objectForKey:@"likedUsers"]
+        NSArray *array = [self.post objectForKey:@"likedUsers"];
         LikeDetailsViewController *likeDetailsViewController = [segue destinationViewController];
-        likeDetailsViewController.post = self.post;
+        likeDetailsViewController.array = array;
+        likeDetailsViewController.units = @"liked";
     }
 }
 

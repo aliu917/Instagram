@@ -17,17 +17,7 @@
 - (void) setImage: (Post *) post {
     NSLog(@"setPost called");
     _post = post;
-    [InstagramHelper makePost: self.postImage forImage: post.image];
-
+    makePostforImage(self.postImage, post.image);
 }
-/*
--(void) makePostImage: (PFFileObject *) postFile {
-    [postFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
-        if (!data) {
-            return NSLog(@"%@", error);
-        }
-        self.postImage.image = [UIImage imageWithData:data];
-    }];
-}*/
 
 @end

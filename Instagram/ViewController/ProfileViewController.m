@@ -23,7 +23,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *followingCount;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UILabel *bio;
+@property (weak, nonatomic) IBOutlet UIImageView *plusImage;
+@property (weak, nonatomic) IBOutlet UIButton *editBioButton;
 @property (strong, nonatomic) NSArray *posts;
+@property (nonatomic) BOOL *allowEdit;
 
 @end
 
@@ -34,9 +37,18 @@ static void saveImageForUser(UIImage *editedImage, PFUser *user) {
     [user setObject:imageFile forKey:@"image"];
     [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (!error) {
-            
         }
     }];
+}
+
+static void formatLayout(UICollectionView *collectionView) {
+    UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *) collectionView.collectionViewLayout;
+    layout.minimumInteritemSpacing = 0;
+    layout.minimumLineSpacing = 0;
+    CGFloat postersPerLine = 3;
+    CGFloat itemWidth = (collectionView.frame.size.width - layout.minimumInteritemSpacing * (postersPerLine - 1)) / postersPerLine;
+    CGFloat itemHeight = itemWidth;
+    layout.itemSize = CGSizeMake(itemWidth, itemHeight);
 }
 
 @implementation ProfileViewController
@@ -48,25 +60,35 @@ static void saveImageForUser(UIImage *editedImage, PFUser *user) {
     if (!self.user) {
         self.user = [PFUser currentUser];
     }
+    PFUser *currUser = [PFUser currentUser];
+    self.allowEdit = YES;
+    if (self.user.username != currUser.username) {
+        self.allowEdit = NO;
+        self.plusImage.hidden = YES;
+        self.editBioButton.hidden = YES;
+    }
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
     self.postCount.text = [@(0) stringValue];
     self.followerCount.text = [@(0) stringValue];
     self.followingCount.text = [@(0) stringValue];
-    [InstagramHelper makeProfileImage: self.profilePhoto withUser: self.user];
+    makeProfileImagewithUser(self.profilePhoto, self.user);
     self.username.text = self.user.username;
-    [self formatLayout];
+    formatLayout(self.collectionView);
     [self fetchUserPosts];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
     self.bio.text = [self.user objectForKey:@"bio"];
+    makeProfileImagewithUser(self.profilePhoto, self.user);
 }
 
-#pragma mark - edit profile image
+#pragma mark - Action: edit profile image
 
 - (IBAction)changeProfilePicture:(id)sender {
-    [InstagramHelper makeImagePicker: self];
+    if (self.allowEdit) {
+        makeImagePicker(self);
+    }
 }
 
 #pragma mark - CollectionViewCell delegate & data source
@@ -88,42 +110,10 @@ static void saveImageForUser(UIImage *editedImage, PFUser *user) {
     UIImage *editedImage = info[UIImagePickerControllerEditedImage];
     self.profilePhoto.image = editedImage;
     saveImageForUser(editedImage, self.user);
-    /*NSData *imageData = UIImageJPEGRepresentation(editedImage, 1);
-    PFFileObject *imageFile = [PFFileObject fileObjectWithName:@"image.png" data: imageData];
-    [imageFile saveInBackground];
-    [self.user setObject:imageFile forKey:@"image"];
-    [self.user saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-        if (!error) {
-            
-        }
-    }];*/
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-/*
-- (void) saveImage: (UIImage *) editedImage ForUser: (PFUser *) user {
-    NSData *imageData = UIImageJPEGRepresentation(editedImage, 1);
-    PFFileObject *imageFile = [PFFileObject fileObjectWithName:@"image.png" data: imageData];
-    [imageFile saveInBackground];
-    [user setObject:imageFile forKey:@"image"];
-    [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-        if (!error) {
-            
-        }
-    }];
-}*/
 
-#pragma marl - ProfileViewController helper functions
-
--(void) formatLayout {
-    UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *) self.collectionView.collectionViewLayout;
-    
-    layout.minimumInteritemSpacing = 0;
-    layout.minimumLineSpacing = 0;
-    CGFloat postersPerLine = 3;
-    CGFloat itemWidth = (self.collectionView.frame.size.width - layout.minimumInteritemSpacing * (postersPerLine - 1)) / postersPerLine;
-    CGFloat itemHeight = itemWidth;
-    layout.itemSize = CGSizeMake(itemWidth, itemHeight);
-}
+#pragma mark - ProfileViewController helper functions
 
 -(void) fetchUserPosts {
     PFQuery *postQuery = [Post query];
@@ -134,10 +124,8 @@ static void saveImageForUser(UIImage *editedImage, PFUser *user) {
         if (posts) {
             self.posts = posts;
             [self.collectionView reloadData];
-            
             self.postCount.text = [@(self.posts.count) stringValue];
-        }
-        else {
+        } else {
             NSLog(@"%@", error.localizedDescription);
         }
     }];
@@ -145,7 +133,6 @@ static void saveImageForUser(UIImage *editedImage, PFUser *user) {
 
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"editSegue"]) {
         EditProfileViewController *editViewController = [segue destinationViewController];

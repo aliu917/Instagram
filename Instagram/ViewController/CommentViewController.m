@@ -18,17 +18,25 @@
 
 @implementation CommentViewController
 
+#pragma mark - CommentViewController lifecycle
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.commentTextView.delegate = self;
 }
+
+#pragma mark - Action: close view
+
 - (IBAction)didTapClose:(id)sender {
     [self dismissViewControllerAnimated:true completion:nil];
 }
+
+#pragma mark - Action: make comment
+
 - (IBAction)didTapComment:(id)sender {
     NSString *formattedText = [NSString stringWithFormat:@"%@", self.commentTextView.text];
     PFUser *currUser = [PFUser currentUser];
-    NSMutableAttributedString *attrString = [InstagramHelper makeString: currUser.username withAppend: formattedText];
+    NSMutableAttributedString *attrString = makeStringwithAppend(currUser.username, formattedText);
     NSString *finalizedComment = [attrString string];
     NSMutableArray *comments = [self.post objectForKey:@"commentsArray"];
     if (!comments) {
@@ -39,20 +47,9 @@
     [self.post setObject:comments forKey:@"commentsArray"];
     [self.post saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (!error) {
-            
         }
     }];
     [self didTapClose:nil];
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
