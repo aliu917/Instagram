@@ -90,7 +90,6 @@ static void setImageBar(UINavigationItem *navigationItem) {
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             LoginViewController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"LoginViewController"];
             appDelegate.window.rootViewController = loginViewController;
-            NSLog(@"User logged out successfully");
         } else {
             NSLog(@"Error logging out: %@", error);
         }

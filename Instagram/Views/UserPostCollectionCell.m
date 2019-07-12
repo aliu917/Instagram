@@ -15,7 +15,6 @@
 #pragma mark - UserPostCollectionCell lifecycle
 
 - (void) setImage: (Post *) post {
-    NSLog(@"setPost called");
     _post = post;
     makePostforImage(self.postImage, post.image);
 }

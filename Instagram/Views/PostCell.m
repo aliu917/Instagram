@@ -20,7 +20,6 @@
 }
 
 - (void) setPost: (Post *) post {
-    NSLog(@"setPost called");
     _post = post;
     self.username.text = post.author.username;
     makeCommentwithPost(self.comment, post);
