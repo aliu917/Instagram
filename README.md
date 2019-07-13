@@ -50,30 +50,39 @@ Please list two areas of the assignment you'd like to **discuss further with you
 Here's a walkthrough of implemented user stories:
 
 Registering new user and logging in:
+
 <img src='https://recordit.co/6kFCANxHv2.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 User can like by either tapping button or double clicking heart:
+
 <img src='https://recordit.co/e20cJjkXw9.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
-User can post a new photo --this took really long... not sure if it will fit...
-<img src='https://recordit.co/37NXc27Ptr.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+User can post a new photo:
+
+<img src='https://recordit.co/JHwoKo6E67.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 One user commenting:
+
 <img src='https://recordit.co/BiiYhyFHc0.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 Liking and commenting for multiple users on same post:
+
 <img src='https://recordit.co/jMGjlelqFk.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 Infinite scroll (hot spotting from my phone because hotel wifi is not working, so it's super slow to load but it works):
+
 <img src='https://recordit.co/8S93X1WeHo.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 User can change their profile image:
+
 <img src='https://recordit.co/y5sAz10782.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 User can edit their bio:
+
 <img src='https://recordit.co/XosOyJ8xl2.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 Show that user can click on profile photo to view profile
+
 <img src='https://recordit.co/t5bGkifxPA.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
