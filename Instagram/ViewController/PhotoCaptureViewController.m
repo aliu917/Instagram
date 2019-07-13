@@ -55,6 +55,9 @@ static UIImage * resizeImage(UIImage *image, CGSize size) {
 #pragma mark - Action: post image and caption
 
 - (IBAction)didTapPost:(id)sender {
+    if (self.postImage == nil) {
+        return;
+    }
     self.caption.delegate = self;
     [Post postUserImage: self.postImage withCaption: self.caption.text withCompletion: nil];
     self.postImage = nil;

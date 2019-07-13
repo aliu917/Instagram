@@ -57,13 +57,13 @@ static void formatLayout(UICollectionView *collectionView) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.allowEdit = NO;
     if (!self.user) {
+        self.allowEdit = YES;
         self.user = [PFUser currentUser];
     }
     PFUser *currUser = [PFUser currentUser];
-    self.allowEdit = YES;
-    if (self.user.username != currUser.username) {
-        self.allowEdit = NO;
+    if (!self.allowEdit) {
         self.plusImage.hidden = YES;
         self.editBioButton.hidden = YES;
     }
@@ -79,8 +79,10 @@ static void formatLayout(UICollectionView *collectionView) {
 }
 
 - (void) viewDidAppear:(BOOL)animated {
+    NSLog(@"Reloading");
     self.bio.text = [self.user objectForKey:@"bio"];
     makeProfileImagewithUser(self.profilePhoto, self.user);
+    [self fetchUserPosts];
 }
 
 #pragma mark - Action: edit profile image

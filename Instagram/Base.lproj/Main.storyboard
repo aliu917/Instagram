@@ -403,7 +403,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="username" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vOz-NW-ATW">
-                                                    <rect key="frame" x="30" y="14" width="86.5" height="32.5"/>
+                                                    <rect key="frame" x="30" y="14" width="354" height="32.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -412,6 +412,7 @@
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="vOz-NW-ATW" secondAttribute="bottom" constant="3" id="g45-hH-Qld"/>
                                                 <constraint firstItem="vOz-NW-ATW" firstAttribute="top" secondItem="XLQ-5B-yyV" secondAttribute="topMargin" constant="3" id="gaJ-Ge-Gz8"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="vOz-NW-ATW" secondAttribute="trailing" constant="10" id="iRf-i8-Jb1"/>
                                                 <constraint firstItem="vOz-NW-ATW" firstAttribute="leading" secondItem="XLQ-5B-yyV" secondAttribute="leadingMargin" constant="10" id="vyz-pP-4Di"/>
                                             </constraints>
                                         </tableViewCellContentView>

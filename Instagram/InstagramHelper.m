@@ -18,7 +18,7 @@ NSString * formatDate(NSDate *createdAtOriginalString) {
     double ti = [createdAtOriginalString timeIntervalSinceDate:todayDate];
     ti = ti * -1;
     if(ti < 1) {
-        return @"never";
+        return @"0 sec ago";
     } else  if (ti < 60) {
         return [NSString stringWithFormat:@"%.00f sec ago", ti];
     } else if (ti < 3600) {
@@ -64,8 +64,6 @@ void setupGRonImagewithTaps(UITapGestureRecognizer *tgr, UIImageView *imageView,
 
 void makeProfileImagewithUser(UIImageView *profilePicture, PFUser *user) {
     PFFileObject *image = [user objectForKey:@"image"];
-    
-    //FIX LATER
     if (image) {
         [image getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
             if (!data) {
