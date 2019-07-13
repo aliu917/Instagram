@@ -83,7 +83,7 @@ User can edit their bio:
 
 Show that user can click on profile photo to view profiles of different users (but user can only edit their profile in their own profile tab)
 
-<img src='https://recordit.co/t5bGkifxPA.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://recordit.co/aOEyCHw3mc.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
