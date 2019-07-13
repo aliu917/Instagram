@@ -12,6 +12,8 @@
 
 @implementation LikedUserCell
 
+#pragma mark - LikedUserCell lifecycle
+
 - (void)awakeFromNib {
     [super awakeFromNib];
 }

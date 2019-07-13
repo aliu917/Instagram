@@ -23,6 +23,7 @@
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
 @property (strong, nonatomic) NSMutableArray *posts;
 @property (assign, nonatomic) BOOL isMoreDataLoading;
+
 @end
 
 static void setImageBar(UINavigationItem *navigationItem) {

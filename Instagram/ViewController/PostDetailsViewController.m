@@ -42,6 +42,12 @@ static long makeLikeCount(Post *post) {
     return count;
 }
 
+static void makeCommentButtons(Post *post, UIButton *commentCount) {
+    NSArray *comments = [post objectForKey:@"commentsArray"];
+    long count = [comments count];
+    NSString *commentText = makeString(count, @"comments");
+    [commentCount setTitle:commentText forState:UIControlStateNormal];
+}
 
 @implementation PostDetailsViewController
 
@@ -54,20 +60,22 @@ static long makeLikeCount(Post *post) {
     self.likeCountNum = makeLikeCount(self.post);
     NSString *likeCountText = makeString(self.likeCountNum, @"likes");
     [self.likeCount setTitle:likeCountText forState:UIControlStateNormal];
-    NSArray *comments = [self.post objectForKey:@"commentsArray"];
+    makeCommentButtons(self.post, self.commentCount);
+    /*NSArray *comments = [self.post objectForKey:@"commentsArray"];
     long count = [comments count];
     NSString *commentText = makeString(count, @"comments");
-    [self.commentCount setTitle:commentText forState:UIControlStateNormal];
+    [self.commentCount setTitle:commentText forState:UIControlStateNormal];*/
     makePostforImage(self.postImage, self.post.image);
 }
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     initialButtonSettingforPost(self.likeButton, self.post);
-    NSArray *comments = [self.post objectForKey:@"commentsArray"];
+    makeCommentButtons(self.post, self.commentCount);
+    /*NSArray *comments = [self.post objectForKey:@"commentsArray"];
     long count = [comments count];
     NSString *commentText = makeString(count, @"comments");
-    [self.commentCount setTitle:commentText forState:UIControlStateNormal];
+    [self.commentCount setTitle:commentText forState:UIControlStateNormal];*/
 }
 
 #pragma mark - Action: like posts
