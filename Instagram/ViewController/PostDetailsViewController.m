@@ -61,21 +61,14 @@ static void makeCommentButtons(Post *post, UIButton *commentCount) {
     NSString *likeCountText = makeString(self.likeCountNum, @"likes");
     [self.likeCount setTitle:likeCountText forState:UIControlStateNormal];
     makeCommentButtons(self.post, self.commentCount);
-    /*NSArray *comments = [self.post objectForKey:@"commentsArray"];
-    long count = [comments count];
-    NSString *commentText = makeString(count, @"comments");
-    [self.commentCount setTitle:commentText forState:UIControlStateNormal];*/
     makePostforImage(self.postImage, self.post.image);
+    [self instantiateGestureRecognizer];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     initialButtonSettingforPost(self.likeButton, self.post);
     makeCommentButtons(self.post, self.commentCount);
-    /*NSArray *comments = [self.post objectForKey:@"commentsArray"];
-    long count = [comments count];
-    NSString *commentText = makeString(count, @"comments");
-    [self.commentCount setTitle:commentText forState:UIControlStateNormal];*/
 }
 
 #pragma mark - Action: like posts
