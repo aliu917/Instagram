@@ -75,13 +75,13 @@ Infinite scroll (hot spotting from my phone because hotel wifi is not working, s
 
 User can change their profile image:
 
-<img src='https://recordit.co/y5sAz10782.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://recordit.co/FQKbX4DWbZ.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 User can edit their bio:
 
 <img src='https://recordit.co/XosOyJ8xl2.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
-Show that user can click on profile photo to view profile
+Show that user can click on profile photo to view profiles of different users (but user can only edit their profile in their own profile tab)
 
 <img src='https://recordit.co/t5bGkifxPA.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
