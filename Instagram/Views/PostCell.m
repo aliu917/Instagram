@@ -26,6 +26,7 @@
     self.dateLabel.text = formatDate(self.post.createdAt);
     makePostforImage(self.postImage, post.image);
     makeProfileImagewithUser(self.profilePicture, post.author);
+    initialButtonSettingforPost(self.likeButton, self.post);
 }
 
 #pragma mark - Action: tapped comment tab to segue
